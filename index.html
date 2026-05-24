@@ -2,10 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" conten<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Learn with Lemon — AR Curriculum</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -219,11 +215,20 @@
 <div class="main" id="main-layout" style="display:none">
   <nav class="sidebar">
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Phase 1 — available now</div>
-      <a class="nav-phase" href="#phase1"><span class="nav-phase-num">01</span> Setup & first lens</a>
+      <div class="sidebar-section-label">Lesson 1</div>
+      <a class="nav-phase" href="#phase1"><span class="nav-phase-num">01</span> Lesson 1</a>
       <a class="nav-lesson" href="#l1-1">1.1 — Ecosystem overview</a>
       <a class="nav-lesson" href="#l1-2">1.2 — Install & pair</a>
       <a class="nav-lesson" href="#l1-3">1.3 — Hello World + chess piece ✓</a>
+    </div>
+    <hr class="sidebar-divider">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Lesson 2</div>
+      <a class="nav-phase" href="#phase2"><span class="nav-phase-num">02</span> Lesson 2</a>
+      <a class="nav-lesson" href="#l2-1">2.1 — Surface detection</a>
+      <a class="nav-lesson" href="#l2-2">2.2 — Place the chessboard</a>
+      <a class="nav-lesson" href="#l2-3">2.3 — Touch & hit testing</a>
+      <a class="nav-lesson" href="#l2-4">2.4 — Tap to change color</a>
     </div>
     <hr class="sidebar-divider">
     <div class="sidebar-section">
@@ -244,10 +249,9 @@
     <!-- PHASE 1 -->
     <div class="phase-block" id="phase1">
       <div class="phase-header">
-        <span class="phase-num">Phase 1</span>
-        <span class="phase-title">Setup & your first lens</span>
-        
+        <span class="phase-num">Lesson 1</span>
       </div>
+      <p style="font-size:14px;color:var(--text-muted);line-height:1.75;margin-bottom:1.5rem;">Okay, before we do anything cool, we have to make sure everything works. I know, I know — setup is nobody's favorite part. But trust me, getting this right now saves you a lot of headache later. We're going to install Lens Studio, get it talking to your phone, and place our first object in the real world. By the end of this lesson you'll have a chess piece sitting in your room. Yes, really.</p>
 
       <!-- 1.1 -->
       <div class="lesson-card" id="l1-1">
@@ -521,6 +525,349 @@
 
     </div>
 
+    <!-- ══ PHASE 2 ══ -->
+    <div class="phase-block" id="phase2">
+      <div class="phase-header">
+        <span class="phase-num">Lesson 2</span>
+      </div>
+      <p style="font-size:14px;color:var(--text-muted);line-height:1.75;margin-bottom:1.5rem;">Now we're getting somewhere. In Lesson 1 we placed things manually — we basically just said "put it here." Lesson 2 is where AR starts feeling like actual magic. We're going to tap a surface and have the chessboard appear right there, anchored to your table like it belongs. Then we'll write our first real script. Don't panic — I'll walk you through every line.</p>
+
+      <!-- 2.1 -->
+      <div class="lesson-card" id="l2-1">
+        <div class="lesson-header" onclick="toggleLesson('b2-1','c2-1')">
+          <span class="lesson-num-badge">2.1</span>
+          <div class="lesson-header-text">
+            <div class="lesson-title">Surface detection & world anchors</div>
+            <div class="lesson-subtitle">How your phone understands floors, tables, and walls — and why it matters for placing your chessboard.</div>
+            <div class="lesson-tags"><span class="tag read">reading</span></div>
+          </div>
+          <span class="lesson-chevron" id="c2-1">&#9658;</span>
+        </div>
+        <div class="lesson-body" id="b2-1">
+          <div class="lesson-reading">
+            <h3>What's actually happening when AR "sees" a surface</h3>
+            <p>In Lesson 1 you added Device Tracking in Surface mode and things stayed anchored. But what is Surface mode actually doing? Your phone's camera is analyzing thousands of tiny visual details — edges, texture patterns, corners — every single frame. This is called <span class="key-term">feature point tracking</span>. From those features it builds a rough 3D map of your environment and identifies flat areas it's confident about. Those flat areas are called <span class="key-term">planes</span>.</p>
+            <p>A plane is just Lens Studio's word for a detected flat surface — your floor, your desk, a table. Once a plane exists, you can stick objects to it. That's the foundation everything in Lesson 2 builds on.</p>
+
+            <h3>What a world anchor is</h3>
+            <p>A <span class="key-term">world anchor</span> is a point in physical space that an AR object attaches to. Once attached, the object stays there even as you walk around — the phone constantly recalculates its position relative to that anchor so nothing drifts. Think of it as hammering an invisible nail into your floor. Everything you hang from it stays put.</p>
+            <p>In Lesson 1 your pawn was anchored at a fixed position you set manually. In Lesson 2 you'll tap a detected surface and anchor the chessboard exactly where you tap — much more natural.</p>
+
+            <h3>What affects detection quality</h3>
+            <ul>
+              <li><strong style="color:var(--text)">Lighting</strong> — too dark and the camera can't see features. Natural light or a well-lit room works best.</li>
+              <li><strong style="color:var(--text)">Surface texture</strong> — a wood grain desk is easy to track. A plain white table is much harder — there's nothing visual to grab onto.</li>
+              <li><strong style="color:var(--text)">Camera movement</strong> — panning slowly gives ARCore/ARKit time to map the space. Moving fast before it's ready causes tracking errors.</li>
+              <li><strong style="color:var(--text)">Reflective surfaces</strong> — glass tables, mirrors, and shiny floors confuse depth estimation.</li>
+            </ul>
+            <div class="callout tip"><strong>Practical habit:</strong> Whenever you start a lens that needs surface detection, hold your phone steady for 2–3 seconds and slowly pan across the surface you want to use. Give it time to map before you try to place anything.</div>
+
+            <div class="platform-tabs" data-tabgroup="2-1-plat">
+              <button class="ptab" data-tab="android" onclick="switchTab(this,'2-1-plat')">Android / Pixel</button>
+              <button class="ptab" data-tab="iphone" onclick="switchTab(this,'2-1-plat')">iPhone</button>
+            </div>
+            <div class="ptab-content" data-tabgroup="2-1-plat" data-tab="android">
+              <p>ARCore does all of this purely through the camera — no special depth hardware needed. Pixel phones have some of the best ARCore integration available, so surface detection tends to be fast and reliable. If you're on a plain white desk, put a piece of paper or a book on it first — that gives ARCore something to track.</p>
+            </div>
+            <div class="ptab-content" data-tabgroup="2-1-plat" data-tab="iphone">
+              <p>ARKit works similarly but is more tightly tuned for Apple hardware. iPhone 12 Pro and later have a LiDAR scanner that actively measures depth rather than guessing from visual patterns — surface detection on those models is nearly instant. Without LiDAR, the same slow-pan advice applies.</p>
+              <div class="callout ios"><strong>iPhone note:</strong> If you have a LiDAR-equipped iPhone, surfaces often appear before you even start looking for them. If not, the 2–3 second pan is your best friend.</div>
+            </div>
+
+            <h3>How this connects to the chessboard</h3>
+            <p>In the next lesson you'll tap a detected surface and the chessboard will appear right where you tapped — anchored to that exact spot on your real table or floor. Understanding what a plane is and what affects detection quality will help you troubleshoot if the board doesn't appear where you expect it.</p>
+
+            <div class="callout spectacles"><strong>When you get Spectacles:</strong> The Snap Spatial Engine uses four cameras instead of one, making surface detection faster and more reliable. The concept is identical — you're still detecting planes and anchoring to them.</div>
+
+            <div class="recap-box">
+              <div class="recap-box-label">Check yourself before moving on</div>
+              <ol>
+                <li>What is feature point tracking and what is the phone looking for?</li>
+                <li>What is a plane in AR terms?</li>
+                <li>What is a world anchor and what problem does it solve?</li>
+                <li>Name two things that make surface detection harder.</li>
+                <li>What should you do before trying to place an object on a surface?</li>
+              </ol>
+            </div>
+          </div>
+          <div class="resources-section">
+            <div class="resources-label">Key references</div>
+            <div class="resource-grid">
+              <a class="resource-item" href="https://developers.snap.com/lens-studio/features/ar-tracking/world/overview" target="_blank" rel="noopener">
+                <span class="resource-dot docs"></span>
+                <div><div class="resource-name">World AR overview</div><div class="resource-desc">How Lens Studio understands and tracks the physical world around you.</div><div class="resource-url">developers.snap.com</div></div>
+              </a>
+              <a class="resource-item" href="https://developers.snap.com/lens-studio/features/ar-tracking/world/tracking-modes" target="_blank" rel="noopener">
+                <span class="resource-dot docs"></span>
+                <div><div class="resource-name">Tracking modes — Device Tracking guide</div><div class="resource-desc">Surface mode, Use Native AR, and the full breakdown of tracking options.</div><div class="resource-url">developers.snap.com</div></div>
+              </a>
+            </div>
+          </div>
+          <div class="lesson-actions">
+            <a class="btn primary" href="https://claude.ai/new?q=I+just+read+Lesson+2.1+of+Learn+with+Lemon+on+surface+detection+and+world+anchors+in+Lens+Studio.+I+have+a+question+about+something+I+didn%27t+understand." target="_blank">Ask Claude a question ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.2 -->
+      <div class="lesson-card" id="l2-2">
+        <div class="lesson-header" onclick="toggleLesson('b2-2','c2-2')">
+          <span class="lesson-num-badge">2.2</span>
+          <div class="lesson-header-text">
+            <div class="lesson-title">Mini-project: tap to place the chessboard</div>
+            <div class="lesson-subtitle">Tap a real surface and the chessboard appears right where you tapped — anchored to your table or floor.</div>
+            <div class="lesson-tags"><span class="tag project">mini-project</span></div>
+          </div>
+          <span class="lesson-chevron" id="c2-2">&#9658;</span>
+        </div>
+        <div class="lesson-body" id="b2-2">
+          <div class="lesson-reading">
+            <h3>What you'll build</h3>
+            <p>A lens where tapping your screen drops the chessboard onto whatever surface your camera is pointing at. It stays there anchored while you walk around it. This is the chess game's home base — everything else we build will live on top of this board.</p>
+
+            <h3>Before you start</h3>
+            <p>Open the project you saved at the end of Lesson 1.3 — the one with the pawn. You'll be adding to it, not starting fresh. Make sure Device Tracking is still on the Camera Object in Surface mode. If you've lost the project, go back to Lesson 1.3 and set it up again — it only takes a few minutes.</p>
+
+            <h3>Step 1 — Import the chessboard</h3>
+            <p>Download the chessboard GLB: <a href="https://poly.pizza/m/21bXFn9QEw9" target="_blank" rel="noopener" style="color:var(--accent)">Chessboard</a> by <a href="https://poly.pizza/u/peter%20moore" target="_blank" rel="noopener" style="color:var(--accent)">peter moore</a> [<a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener" style="color:var(--accent)">CC-BY</a>] via Poly Pizza.</p>
+            <p>Drag the GLB into the <strong style="color:var(--text)">Asset Browser</strong> in Lens Studio, same as you did with the pawn.</p>
+
+            <h3>Step 2 — Set up a Script component on the Camera</h3>
+            <p>Tap-to-place requires a small amount of scripting. Don't worry — we'll keep it minimal here and go deeper on scripts in Lesson 2.4.</p>
+            <ul>
+              <li>In the Scene Hierarchy, click <strong style="color:var(--text)">Camera Object</strong></li>
+              <li>In the Inspector, click <strong style="color:var(--text)">Add Component → Script</strong></li>
+              <li>Click <strong style="color:var(--text)">+ (Add Script)</strong> and choose <strong style="color:var(--text)">TypeScript</strong> — name it <span class="key-term">TapToPlace</span></li>
+            </ul>
+
+            <h3>Step 3 — Write the tap-to-place script</h3>
+            <p>Double-click the <span class="key-term">TapToPlace</span> script to open it in the editor. Delete everything that's there and paste in the following:</p>
+            <div style="background:var(--surface2);border-radius:var(--radius-md);padding:1rem 1.25rem;margin:0.75rem 0;font-family:var(--mono);font-size:12px;color:var(--text-muted);overflow-x:auto;line-height:1.8;">
+// @input SceneObject board<br>
+<br>
+var touchSystem = global.touchSystem;<br>
+<br>
+touchSystem.touchStart.add(function(eventData) {<br>
+&nbsp;&nbsp;var hit = global.scene.raycast(eventData.getPosition());<br>
+&nbsp;&nbsp;if (hit && hit.isValid()) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;script.board.getTransform().setWorldPosition(hit.position);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;script.board.enabled = true;<br>
+&nbsp;&nbsp;}<br>
+});
+            </div>
+            <p>Save the script. Back in the Inspector on the Camera Object, you'll now see a <strong style="color:var(--text)">Board</strong> field under the script component. Drag your chessboard object from the Scene Hierarchy into that field.</p>
+            <div class="callout tip"><strong>What this does:</strong> When you tap the screen, the script shoots a ray from the camera into the real world. If it hits a detected surface, it moves the board to that exact spot. Simple as that.</div>
+
+            <h3>Step 4 — Add the chessboard to the scene</h3>
+            <ul>
+              <li>Drag the chessboard from the Asset Browser into the Scene Hierarchy — make sure it's at <strong style="color:var(--text)">root level</strong>, same as the pawn and Camera Object</li>
+              <li>In the Inspector with the board selected, <strong style="color:var(--text)">uncheck the checkbox</strong> next to its name at the top — this hides it until you tap to place it</li>
+              <li>Adjust Scale until the board looks like it's sitting naturally on your table — try <span class="key-term">10, 10, 10</span> as a starting point</li>
+            </ul>
+
+            <h3>Step 5 — Position the pawn on the board</h3>
+            <p>Now that the board will be placed by tapping, the pawn needs to move with it. Make the pawn a <strong style="color:var(--text)">child</strong> of the board by dragging the pawn object onto the chessboard object in the Scene Hierarchy — the pawn should appear indented underneath it. This way when the board moves to where you tapped, the pawn comes with it.</p>
+            <div class="callout tip"><strong>Note:</strong> This is the one case where nesting IS correct. The pawn belongs to the board, so it should be a child of it. Only Camera Object should stay at root level on its own.</div>
+
+            <h3>Step 6 — Push to your phone and test</h3>
+            <p>Push the lens to your phone. Point your camera at a table or floor, give it 2–3 seconds to detect the surface, then tap. The chessboard should appear right where you tapped with the pawn sitting on it. Tap a different spot and the board moves there.</p>
+
+            <h3>What success looks like</h3>
+            <p>You tap your coffee table and the chessboard appears on it, sitting flat, with the pawn on top. When you walk around, both stay anchored to the table. That's your game board placed in the real world.</p>
+
+            <h3>Troubleshooting</h3>
+            <ul>
+              <li><strong style="color:var(--text)">Nothing appears when I tap:</strong> The surface might not be detected yet — pan slowly for a few seconds first, then tap</li>
+              <li><strong style="color:var(--text)">Board appears but flies to a weird position:</strong> Make sure the Board field in the script is connected to the right object</li>
+              <li><strong style="color:var(--text)">Pawn doesn't move with the board:</strong> Check that the pawn is nested under the board in the hierarchy, not at root level</li>
+              <li><strong style="color:var(--text)">Board is way too big or small:</strong> Adjust Scale on the board object — the pawn's scale may also need adjusting relative to the board</li>
+              <li><strong style="color:var(--text)">Board appears tilted:</strong> It's inheriting the surface angle — if your table is perfectly flat this shouldn't happen, but slight surface tilt is normal</li>
+            </ul>
+
+            <div class="callout spectacles"><strong>When you get Spectacles:</strong> Tap-to-place becomes pinch-to-place — you reach out and pinch the air where you want the board. The script logic is nearly identical, just swapping the input event.</div>
+          </div>
+          <div class="resources-section">
+            <div class="resources-label">Key references</div>
+            <div class="resource-grid">
+              <a class="resource-item" href="https://poly.pizza/m/21bXFn9QEw9" target="_blank" rel="noopener">
+                <span class="resource-dot assets"></span>
+                <div><div class="resource-name">Chessboard by peter moore [CC-BY] via Poly Pizza</div><div class="resource-desc">The free low-poly chessboard used throughout this curriculum. Download the GLB version.</div><div class="resource-url">poly.pizza/m/21bXFn9QEw9</div></div>
+              </a>
+              <a class="resource-item" href="https://developers.snap.com/lens-studio/features/ar-tracking/world/tracking-modes" target="_blank" rel="noopener">
+                <span class="resource-dot docs"></span>
+                <div><div class="resource-name">Device Tracking — official guide</div><div class="resource-desc">Surface mode and how Lens Studio anchors objects to detected planes.</div><div class="resource-url">developers.snap.com</div></div>
+              </a>
+            </div>
+          </div>
+          <div class="lesson-actions">
+            <a class="btn primary" href="https://claude.ai/new?q=I+am+working+on+Lesson+2.2+of+Learn+with+Lemon+—+tap+to+place+a+chessboard+on+a+detected+surface+in+Lens+Studio+5.20.+I+am+stuck+and+need+troubleshooting+help." target="_blank">Get troubleshooting help ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.3 -->
+      <div class="lesson-card" id="l2-3">
+        <div class="lesson-header" onclick="toggleLesson('b2-3','c2-3')">
+          <span class="lesson-num-badge">2.3</span>
+          <div class="lesson-header-text">
+            <div class="lesson-title">Touch input & hit testing</div>
+            <div class="lesson-subtitle">How tapping your screen connects to objects in 3D space — the concept behind everything interactive you'll build.</div>
+            <div class="lesson-tags"><span class="tag read">reading</span></div>
+          </div>
+          <span class="lesson-chevron" id="c2-3">&#9658;</span>
+        </div>
+        <div class="lesson-body" id="b2-3">
+          <div class="lesson-reading">
+            <h3>You already used this in 2.2</h3>
+            <p>The tap-to-place script from Lesson 2.2 used touch input and hit testing without explaining what they were. Now that you've seen them work, let's understand what actually happened.</p>
+
+            <h3>Touch events</h3>
+            <p>When someone taps the screen, Lens Studio fires a <span class="key-term">touch event</span>. Your script can listen for these events and respond to them — move an object, change a color, play a sound, start an animation. There are three types you'll use:</p>
+            <ul>
+              <li><span class="key-term">touchStart</span> — fires the moment a finger touches the screen. This is what the tap-to-place script used.</li>
+              <li><span class="key-term">touchMove</span> — fires continuously while a finger is dragging across the screen. You'll use this for drag-and-drop in Lesson 5.</li>
+              <li><span class="key-term">touchEnd</span> — fires when the finger lifts off. Useful for "release to drop" interactions.</li>
+            </ul>
+
+            <h3>Hit testing — from screen tap to 3D world</h3>
+            <p>Here's the subtle part: your screen is 2D but your AR world is 3D. When someone taps a spot on the screen, how does the script know what they tapped on in the 3D world?</p>
+            <p>The answer is <span class="key-term">hit testing</span>. Lens Studio shoots an invisible ray from the camera through the tap point out into the 3D world — like a laser pointer through the screen. Whatever that ray hits first is what the user tapped. In Lesson 2.2, the ray hit a detected surface plane and that's where the board appeared.</p>
+            <p>In Lesson 2.4, the ray will hit the pawn itself — and that's how you'll know which piece was tapped to change its color.</p>
+
+            <h3>The two kinds of hit testing you'll use</h3>
+            <ul>
+              <li><strong style="color:var(--text)">Raycast against world surfaces</strong> — what you did in 2.2. The ray hits a detected plane in the real world. Used for placing objects.</li>
+              <li><strong style="color:var(--text)">Raycast against scene objects</strong> — the ray hits a specific 3D object in your scene. Used for selecting and interacting with objects like the pawn.</li>
+            </ul>
+            <div class="callout tip"><strong>Think of it this way:</strong> touch events tell you <em>where</em> on the screen someone tapped. Hit testing tells you <em>what</em> that tap means in the 3D world.</div>
+
+            <div class="callout spectacles"><strong>When you get Spectacles:</strong> Touch events become hand gesture events — a pinch or poke in the air instead of a screen tap. The hit testing logic is identical. The Spectacles Interaction Kit handles the input translation so your code barely changes.</div>
+
+            <div class="recap-box">
+              <div class="recap-box-label">Check yourself before moving on</div>
+              <ol>
+                <li>What is a touch event and when does it fire?</li>
+                <li>Name the three touch event types and what each one is used for.</li>
+                <li>What is hit testing and why do you need it?</li>
+                <li>What's the difference between raycasting against a world surface vs. a scene object?</li>
+              </ol>
+            </div>
+          </div>
+          <div class="lesson-actions">
+            <a class="btn primary" href="https://claude.ai/new?q=I+just+read+Lesson+2.3+of+Learn+with+Lemon+on+touch+input+and+hit+testing+in+Lens+Studio.+I+have+a+question+about+something+I+didn%27t+understand." target="_blank">Ask Claude a question ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.4 -->
+      <div class="lesson-card" id="l2-4">
+        <div class="lesson-header" onclick="toggleLesson('b2-4','c2-4')">
+          <span class="lesson-num-badge">2.4</span>
+          <div class="lesson-header-text">
+            <div class="lesson-title">Mini-project: tap to change your pawn's color</div>
+            <div class="lesson-subtitle">Your first real TypeScript — tap the pawn to switch it between white and black, choosing which player it belongs to.</div>
+            <div class="lesson-tags"><span class="tag project">mini-project</span><span class="tag read">TypeScript</span></div>
+          </div>
+          <span class="lesson-chevron" id="c2-4">&#9658;</span>
+        </div>
+        <div class="lesson-body" id="b2-4">
+          <div class="lesson-reading">
+            <h3>What you'll build</h3>
+            <p>Tap the pawn and it switches between white and black — toggling which player it belongs to. This is genuinely useful for the chess game and also your introduction to TypeScript: variables, if/else logic, and changing object properties at runtime.</p>
+
+            <h3>A quick TypeScript primer</h3>
+            <p>Before we write the script, here are the four concepts you'll use:</p>
+            <ul>
+              <li><span class="key-term">variable</span> — a named box that holds a value. <code style="font-family:var(--mono);font-size:12px;background:var(--surface2);padding:1px 5px;border-radius:4px;">var isWhite = true</code> creates a variable called isWhite that starts as true.</li>
+              <li><span class="key-term">if/else</span> — makes a decision. "If isWhite is true, do this. Otherwise, do that."</li>
+              <li><span class="key-term">function</span> — a named block of code that runs when called. Touch events call a function when triggered.</li>
+              <li><span class="key-term">component</span> — an object's properties in Lens Studio. The material is a component. You'll change its color property.</li>
+            </ul>
+
+            <h3>Step 1 — Add a Script to the pawn</h3>
+            <ul>
+              <li>In the Scene Hierarchy, click the <strong style="color:var(--text)">pawn object</strong></li>
+              <li>In the Inspector, click <strong style="color:var(--text)">Add Component → Script</strong></li>
+              <li>Click <strong style="color:var(--text)">+ (Add Script)</strong>, choose <strong style="color:var(--text)">TypeScript</strong>, name it <span class="key-term">PawnColor</span></li>
+            </ul>
+
+            <h3>Step 2 — Write the color toggle script</h3>
+            <p>Double-click <span class="key-term">PawnColor</span> to open it. Delete everything and paste this in:</p>
+            <div style="background:var(--surface2);border-radius:var(--radius-md);padding:1rem 1.25rem;margin:0.75rem 0;font-family:var(--mono);font-size:12px;color:var(--text-muted);overflow-x:auto;line-height:1.8;">
+// @input Component.RenderMeshVisual pawnMesh<br>
+<br>
+var isWhite = true;<br>
+<br>
+var whiteColor = new vec4(1, 1, 1, 1);<br>
+var blackColor = new vec4(0.1, 0.1, 0.1, 1);<br>
+<br>
+var touchEvent = script.createEvent("TapEvent");<br>
+touchEvent.bind(function() {<br>
+&nbsp;&nbsp;isWhite = !isWhite;<br>
+&nbsp;&nbsp;if (isWhite) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;script.pawnMesh.mainMaterial.mainPass.baseColor = whiteColor;<br>
+&nbsp;&nbsp;} else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;script.pawnMesh.mainMaterial.mainPass.baseColor = blackColor;<br>
+&nbsp;&nbsp;}<br>
+});
+            </div>
+
+            <h3>Step 3 — Connect the script to the pawn's material</h3>
+            <p>Save the script. Back in the Inspector on the pawn, you'll see a <strong style="color:var(--text)">Pawn Mesh</strong> field. Click the target icon next to it and select the pawn's render mesh component — it should appear in the dropdown as the pawn's visual component.</p>
+
+            <h3>Step 4 — Test it</h3>
+            <p>Push to your phone. Tap the pawn — it should switch from its original color to black. Tap again — back to white. Tap again — black. That toggle is your first working TypeScript script.</p>
+
+            <h3>What each line does</h3>
+            <ul>
+              <li><strong style="color:var(--text)">var isWhite = true</strong> — tracks the current state. Starts as white.</li>
+              <li><strong style="color:var(--text)">vec4(1, 1, 1, 1)</strong> — a color in RGBA format. 1,1,1 is white. 0,0,0 is black. The last 1 is full opacity.</li>
+              <li><strong style="color:var(--text)">isWhite = !isWhite</strong> — flips the boolean. If it was true, it becomes false. If false, true.</li>
+              <li><strong style="color:var(--text)">mainPass.baseColor</strong> — the actual color property on the material. This is what changes visually.</li>
+            </ul>
+
+            <div class="callout tip"><strong>Want more colors?</strong> Try <code style="font-family:var(--mono);font-size:12px;background:var(--surface2);padding:1px 5px;border-radius:4px;">new vec4(0.8, 0.2, 0.2, 1)</code> for red or <code style="font-family:var(--mono);font-size:12px;background:var(--surface2);padding:1px 5px;border-radius:4px;">new vec4(0.2, 0.4, 0.8, 1)</code> for blue. The three numbers are Red, Green, Blue — each between 0 and 1.</div>
+
+            <h3>Fun things to try 🍋</h3>
+            <p>You've got a working color toggle — now push it further:</p>
+            <ul>
+              <li>Change the colors to something other than white and black — team colors, your favorite colors, whatever</li>
+              <li>What happens if you add a third color and cycle through three options instead of two?</li>
+              <li>Can you figure out how to make the pawn start as black instead of white? (Hint: change one word in the script)</li>
+              <li>Try changing the color values slightly — what does <code style="font-family:var(--mono);font-size:12px;background:var(--surface2);padding:1px 5px;border-radius:4px;">vec4(0.9, 0.8, 0.5, 1)</code> look like?</li>
+            </ul>
+
+            <h3>Troubleshooting</h3>
+            <ul>
+              <li><strong style="color:var(--text)">Tapping does nothing:</strong> Make sure the Pawn Mesh field in the Inspector is connected — if it's empty the script has nothing to change</li>
+              <li><strong style="color:var(--text)">Error in the Logger:</strong> Check that you copied the script exactly — a missing bracket or semicolon will break it</li>
+              <li><strong style="color:var(--text)">Color changes but looks wrong:</strong> The pawn's material might have a texture overriding the base color — try setting the texture slot to empty in the material settings</li>
+              <li><strong style="color:var(--text)">Can't find the render mesh component:</strong> Click the pawn in the hierarchy, look in the Inspector for a component called Render Mesh Visual — that's the one to connect</li>
+            </ul>
+
+            <div class="callout spectacles"><strong>When you get Spectacles:</strong> TapEvent becomes a pinch gesture via the Spectacles Interaction Kit. The color logic stays exactly the same — just the input event name changes.</div>
+          </div>
+          <div class="resources-section">
+            <div class="resources-label">Key references</div>
+            <div class="resource-grid">
+              <a class="resource-item" href="https://developers.snap.com/lens-studio/features/scripting/script-overview" target="_blank" rel="noopener">
+                <span class="resource-dot docs"></span>
+                <div><div class="resource-name">Scripting overview — official guide</div><div class="resource-desc">How scripts work in Lens Studio, components, and the TypeScript API.</div><div class="resource-url">developers.snap.com</div></div>
+              </a>
+              <a class="resource-item" href="https://developers.snap.com/lens-studio/api/lens-scripting/" target="_blank" rel="noopener">
+                <span class="resource-dot docs"></span>
+                <div><div class="resource-name">Lens Studio API reference</div><div class="resource-desc">Every property and method available in Lens Studio scripting. Bookmark this.</div><div class="resource-url">developers.snap.com</div></div>
+              </a>
+            </div>
+          </div>
+          <div class="lesson-actions">
+            <a class="btn primary" href="https://claude.ai/new?q=I+am+working+on+Lesson+2.4+of+Learn+with+Lemon+—+writing+a+TypeScript+script+to+change+my+pawn%27s+color+on+tap+in+Lens+Studio+5.20.+I+am+stuck+and+need+troubleshooting+help." target="_blank">Get troubleshooting help ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     </div>
   </main>
 </div>
@@ -529,575 +876,6 @@
   <div style="display:flex;align-items:center;gap:8px">
     <img src="data:image/png;base64,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" alt="Lemon logo" style="width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0;">
     <span class="footer-text">Learn with Lemon — AR Curriculum</span>
-  </div>
-  <span class="footer-text">
-    <a class="footer-link" href="https://developers.snap.com/lens-studio/home" target="_blank" rel="noopener">Lens Studio docs ↗</a>
-    &nbsp;·&nbsp;
-    <a class="footer-link" href="https://discord.gg/snapar" target="_blank" rel="noopener">Snap AR Discord ↗</a>
-    &nbsp;·&nbsp;
-    <a class="footer-link" href="https://substack.com/@lifeslemon" target="_blank" rel="noopener">Lemon Learns ↗</a>
-  </span>
-</footer>
-
-<script>
-var OS = '', PHONE = '';
-
-function pick(btn) {
-  var group = btn.dataset.group;
-  document.querySelectorAll('[data-group="'+group+'"]').forEach(function(b){ b.classList.remove('selected'); });
-  btn.classList.add('selected');
-  if (group === 'os') OS = btn.dataset.val;
-  if (group === 'phone') PHONE = btn.dataset.val;
-  if (OS && PHONE) document.getElementById('picker-go').classList.add('ready');
-}
-
-function startCurriculum() {
-  document.getElementById('picker').style.display = 'none';
-  document.getElementById('site-header').style.display = '';
-  document.getElementById('main-layout').style.display = '';
-  document.getElementById('site-footer').style.display = '';
-  applyPlatform();
-}
-
-function applyPlatform() {
-  var labels = { windows:'Windows', mac:'Mac', android:'Android / Pixel', iphone:'iPhone' };
-  document.getElementById('platform-label').textContent = labels[OS] + ' + ' + labels[PHONE];
-  var setupBtn = document.getElementById('setup-help-btn');
-  var q = 'Help+me+troubleshoot+Lens+Studio+setup';
-  if (OS === 'windows' && PHONE === 'android') q += '+on+Windows+with+my+Android+Pixel';
-  else if (OS === 'windows' && PHONE === 'iphone') q += '+on+Windows+with+my+iPhone';
-  else if (OS === 'mac' && PHONE === 'android') q += '+on+Mac+with+my+Android+Pixel';
-  else if (OS === 'mac' && PHONE === 'iphone') q += '+on+Mac+with+my+iPhone';
-  q += '+—+I+am+working+through+Lesson+1.2+of+my+phone+AR+curriculum';
-  setupBtn.href = 'https://claude.ai/new?q=' + q;
-  document.querySelectorAll('.ptab').forEach(function(tab) {
-    var val = tab.dataset.tab;
-    var group = tab.dataset.tabgroup;
-    if (val === PHONE || val === OS) switchTab(tab, group);
-  });
-}
-
-function switchTab(btn, group) {
-  document.querySelectorAll('.ptab[data-tabgroup="'+group+'"]').forEach(function(t){ t.classList.remove('active'); });
-  document.querySelectorAll('.ptab-content[data-tabgroup="'+group+'"]').forEach(function(c){ c.classList.remove('active'); });
-  btn.classList.add('active');
-  var content = document.querySelector('.ptab-content[data-tabgroup="'+group+'"][data-tab="'+btn.dataset.tab+'"]');
-  if (content) content.classList.add('active');
-}
-
-function showPicker() {
-  document.getElementById('picker').style.display = 'flex';
-  document.getElementById('site-header').style.display = 'none';
-  document.getElementById('main-layout').style.display = 'none';
-  document.getElementById('site-footer').style.display = 'none';
-}
-
-function toggleLesson(bodyId, chevId) {
-  var body = document.getElementById(bodyId);
-  var chev = document.getElementById(chevId);
-  var isOpen = body.classList.toggle('open');
-  chev.classList.toggle('open', isOpen);
-}
-</script>
-</body>
-</html>
-t="width=device-width, initial-scale=1.0">
-<title>Learn with Lemon — Lens Studio • Snapchat • AR Curriculum</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #F3E8FF;
-    --surface: #ffffff;
-    --surface2: #ede0fb;
-    --border: #d8c4f5;
-    --accent: #8562CA;
-    --accent-dark: #6a46b0;
-    --accent-light: #c4a8f0;
-    --accent-bg: #ede0fb;
-    --yellow: #F5C518;
-    --yellow-dark: #c49a00;
-    --yellow-bg: #fffbea;
-    --amber: #E8A020;
-    --amber-bg: #fff7e6;
-    --green: #2d9e6b;
-    --green-bg: #e8f7f0;
-    --blue: #4a7fc1;
-    --blue-bg: #eaf0fb;
-    --text: #1a0a33;
-    --text-muted: #6b4fa0;
-    --text-dim: #a898c8;
-    --mono: 'DM Mono', monospace;
-    --serif: 'Playfair Display', Georgia, serif;
-    --sans: 'DM Sans', sans-serif;
-    --radius-sm: 8px;
-    --radius-md: 14px;
-    --radius-lg: 20px;
-    --radius-xl: 28px;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.75; min-height: 100vh; }
-
-  .picker-overlay { min-height: 100vh; background: var(--bg); display: flex; flex-direction: column; align-items: center; }
-  .picker-hero { width: 100%; max-width: 900px; margin: 2rem auto 0; padding: 0 1.5rem; }
-  .picker-hero img { width: 100%; min-height: 300px; object-fit: cover; border-radius: var(--radius-xl); display: block; margin: 0 auto; }
-  .picker-box { max-width: 560px; width: 100%; padding: 2rem 1.5rem 3rem; }
-  .picker-eyebrow { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.5rem; text-align: center; }
-  .picker-title { font-family: var(--serif); font-size: 2rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; text-align: center; line-height: 1.2; }
-  .picker-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.65; text-align: center; }
-  .picker-section-label { font-family: var(--mono); font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
-  .picker-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-  .picker-btn { font-family: var(--sans); font-size: 13px; font-weight: 500; padding: 9px 20px; border-radius: 50px; border: 2px solid var(--border); background: var(--surface); color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
-  .picker-btn:hover { border-color: var(--accent-light); color: var(--accent); }
-  .picker-btn.selected { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-  .picker-go { font-family: var(--sans); font-size: 14px; font-weight: 500; padding: 12px 32px; border-radius: 50px; border: none; background: var(--accent); color: #fff; cursor: pointer; transition: all 0.15s; opacity: 0.35; pointer-events: none; display: block; margin: 0.5rem auto 0; }
-  .picker-go.ready { opacity: 1; pointer-events: all; }
-  .picker-go.ready:hover { background: var(--accent-dark); }
-
-  .site-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 10; }
-  .header-brand { display: flex; align-items: center; gap: 10px; }
-  .brand-lemon { width: 36px; height: 36px; border-radius: 50%; background: var(--yellow); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-  .brand-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--text); line-height: 1; }
-  .brand-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-  .platform-badge { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; padding: 5px 14px; border-radius: 50px; border: 1.5px solid var(--border); color: var(--text-muted); cursor: pointer; transition: all 0.15s; background: var(--surface); }
-  .platform-badge:hover { border-color: var(--accent-light); color: var(--accent); }
-  .platform-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-
-  .main { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 65px); }
-  .sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 0; position: sticky; top: 65px; height: calc(100vh - 65px); overflow-y: auto; }
-  .sidebar-section { padding: 0 1rem; margin-bottom: 1.25rem; }
-  .sidebar-section-label { font-family: var(--mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; padding: 0 6px; }
-  .nav-phase { font-size: 12px; font-weight: 500; color: var(--text-muted); padding: 7px 10px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 8px; transition: background 0.15s, color 0.15s; text-decoration: none; }
-  .nav-phase:hover { background: var(--accent-bg); color: var(--accent); }
-  .nav-phase-num { font-family: var(--mono); font-size: 10px; background: var(--accent-bg); color: var(--accent); padding: 1px 7px; border-radius: 50px; min-width: 24px; text-align: center; }
-  .nav-lesson { font-size: 12px; color: var(--text-dim); padding: 4px 10px 4px 38px; border-radius: var(--radius-sm); transition: background 0.15s, color 0.15s; text-decoration: none; display: block; }
-  .nav-lesson:hover { background: var(--accent-bg); color: var(--text-muted); }
-  .nav-coming { font-size: 11px; color: var(--text-dim); padding: 4px 10px; font-family: var(--mono); font-style: italic; }
-  .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 1rem; }
-
-  .content { padding: 2.5rem 3rem; max-width: 820px; }
-  .intro-card { background: var(--surface); border: 1.5px solid var(--border); border-left: 4px solid var(--accent); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
-  .intro-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
-  .intro-card p + p { margin-top: 0.5rem; }
-  .phase-block { margin-bottom: 3.5rem; scroll-margin-top: 2rem; }
-  .phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1.5px solid var(--border); }
-  .phase-num { font-family: var(--mono); font-size: 10px; color: var(--accent); background: var(--accent-bg); border: 1.5px solid var(--accent-light); padding: 3px 12px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.08em; }
-  .phase-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; flex: 1; color: var(--text); }
-  .lesson-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 1rem; overflow: hidden; transition: border-color 0.2s; }
-  .lesson-card:hover { border-color: var(--accent-light); }
-  .lesson-header { padding: 1rem 1.25rem; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; user-select: none; }
-  .lesson-num-badge { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--accent); background: var(--accent-bg); border: 1.5px solid var(--accent-light); padding: 2px 9px; border-radius: 50px; margin-top: 2px; white-space: nowrap; }
-  .lesson-header-text { flex: 1; }
-  .lesson-title { font-size: 14px; font-weight: 500; color: var(--text); }
-  .lesson-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
-  .lesson-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-  .tag { font-family: var(--mono); font-size: 10px; padding: 2px 9px; border-radius: 50px; border: 1.5px solid var(--border); color: var(--text-dim); }
-  .tag.read { border-color: #b8d4f5; color: var(--blue); background: var(--blue-bg); }
-  .tag.project { border-color: #a8e5c8; color: var(--green); background: var(--green-bg); }
-  .tag.resource { border-color: #f5d898; color: var(--amber); background: var(--amber-bg); }
-  .lesson-chevron { font-size: 11px; color: var(--text-dim); transition: transform 0.2s; margin-top: 3px; flex-shrink: 0; }
-  .lesson-chevron.open { transform: rotate(90deg); }
-  .lesson-body { display: none; border-top: 1.5px solid var(--border); }
-  .lesson-body.open { display: block; }
-
-  .lesson-reading { padding: 1.5rem 1.5rem 1rem; }
-  .lesson-reading h3 { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--text); margin: 1.25rem 0 0.5rem; }
-  .lesson-reading h3:first-child { margin-top: 0; }
-  .lesson-reading p { font-size: 13px; color: var(--text-muted); line-height: 1.75; margin-bottom: 0.75rem; }
-  .lesson-reading ul { list-style: none; margin: 0.5rem 0 0.75rem; padding: 0; }
-  .lesson-reading ul li { font-size: 13px; color: var(--text-muted); padding: 3px 0 3px 1.2rem; position: relative; }
-  .lesson-reading ul li::before { content: '—'; position: absolute; left: 0; color: var(--accent-light); font-family: var(--mono); font-size: 10px; top: 5px; }
-  .key-term { font-family: var(--mono); font-size: 12px; background: var(--accent-bg); border: 1px solid var(--border); border-radius: 5px; padding: 1px 7px; color: var(--accent-dark); }
-
-  .platform-tabs { display: flex; gap: 6px; margin: 1rem 0 0.75rem; flex-wrap: wrap; }
-  .ptab { font-family: var(--sans); font-size: 12px; font-weight: 500; padding: 4px 14px; border-radius: 50px; border: 1.5px solid var(--border); background: var(--surface); color: var(--text-dim); cursor: pointer; transition: all 0.15s; }
-  .ptab:hover { color: var(--text-muted); border-color: var(--accent-light); }
-  .ptab.active { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-  .ptab-content { display: none; }
-  .ptab-content.active { display: block; }
-
-  .callout { border-radius: var(--radius-sm); padding: 0.85rem 1rem; margin: 1rem 0; font-size: 13px; line-height: 1.6; }
-  .callout.spectacles { background: var(--yellow-bg); border-left: 3px solid var(--yellow); color: #7a5800; }
-  .callout.spectacles strong { color: var(--yellow-dark); font-weight: 500; }
-  .callout.tip { background: var(--green-bg); border-left: 3px solid #a8e5c8; color: #1a5e40; }
-  .callout.tip strong { color: var(--green); font-weight: 500; }
-  .callout.ios { background: var(--blue-bg); border-left: 3px solid #b8d4f5; color: #1e3d6e; }
-  .callout.ios strong { color: var(--blue); font-weight: 500; }
-
-  .recap-box { background: var(--accent-bg); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1.25rem; border: 1px solid var(--border); }
-  .recap-box-label { font-family: var(--mono); font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-  .recap-box ol { padding-left: 1.25rem; }
-  .recap-box ol li { font-size: 13px; color: var(--text-muted); padding: 2px 0; }
-
-  .lesson-actions { padding: 1rem 1.5rem 1.25rem; display: flex; gap: 8px; flex-wrap: wrap; border-top: 1.5px solid var(--border); }
-  .btn { font-family: var(--sans); font-size: 12px; font-weight: 500; padding: 7px 16px; border-radius: 50px; border: 1.5px solid var(--border); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s; color: var(--text-muted); background: var(--surface); }
-  .btn:hover { border-color: var(--accent-light); color: var(--accent); background: var(--accent-bg); }
-  .btn.primary { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-  .btn.primary:hover { background: var(--accent); color: #fff; }
-  .btn.blue-btn { border-color: #b8d4f5; color: var(--blue); background: var(--blue-bg); }
-  .btn.blue-btn:hover { background: var(--blue); color: #fff; }
-
-  .resources-section { padding: 1rem 1.5rem; border-top: 1.5px solid var(--border); background: var(--bg); }
-  .resources-label { font-family: var(--mono); font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
-  .resource-grid { display: flex; flex-direction: column; gap: 6px; }
-  .resource-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; background: var(--surface); border-radius: var(--radius-sm); border: 1.5px solid var(--border); text-decoration: none; transition: border-color 0.15s; }
-  .resource-item:hover { border-color: var(--accent-light); }
-  .resource-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
-  .resource-dot.docs { background: var(--blue); }
-  .resource-dot.assets { background: var(--amber); }
-  .resource-name { font-size: 12px; font-weight: 500; color: var(--text); }
-  .resource-desc { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-  .resource-url { font-family: var(--mono); font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-  .site-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-  .footer-text { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
-  .footer-link { color: var(--accent); text-decoration: none; }
-  .footer-link:hover { text-decoration: underline; }
-
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--accent-light); border-radius: 3px; }
-
-  @media (max-width: 700px) {
-    .main { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    .content { padding: 1.5rem; }
-    .site-header { padding: 1rem 1.5rem; }
-  }
-</style>
-</head>
-<body>
-
-<!-- PICKER -->
-<div id="picker" style="display:flex">
-  <div class="picker-overlay">
-    <div class="picker-hero">
-    <img src="Learn_with_Lemon_-_AR.png" alt="Learn with Lemon — AR Curriculum banner">
-    </div>
-    <div class="picker-box">
-      <div class="picker-eyebrow">Lens Studio • Snapchat • AR Curriculum</div>
-      <h1 class="picker-title">What are you working with?</h1>
-      <p class="picker-sub">Pick your computer and phone. The lessons are the same for everyone, only setup instructions change. You can switch any time from the header.</p>
-      <div class="picker-section-label">Your computer</div>
-      <div class="picker-group">
-        <button class="picker-btn" data-group="os" data-val="windows" onclick="pick(this)">Windows</button>
-        <button class="picker-btn" data-group="os" data-val="mac" onclick="pick(this)">Mac</button>
-      </div>
-      <div class="picker-section-label">Your phone</div>
-      <div class="picker-group">
-        <button class="picker-btn" data-group="phone" data-val="android" onclick="pick(this)">Android / Pixel</button>
-        <button class="picker-btn" data-group="phone" data-val="iphone" onclick="pick(this)">iPhone</button>
-      </div>
-      <button class="picker-go" id="picker-go" onclick="startCurriculum()">Let's go ↗</button>
-    </div>
-  </div>
-</div>
-
-<!-- HEADER -->
-<header class="site-header" id="site-header" style="display:none">
-  <div class="header-brand">
-    <img src="action_presenting_data_square.png" alt="Lemon logo" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;">
-    <div>
-      <div class="brand-name">Learn with Lemon</div>
-      <div class="brand-sub">Phone AR · Lens Studio</div>
-    </div>
-  </div>
-  <div class="platform-badge" onclick="showPicker()">
-    <span class="platform-dot"></span>
-    <span id="platform-label">Loading…</span>
-    <span style="color:var(--text-dim)">· change</span>
-  </div>
-</header>
-
-<!-- MAIN -->
-<div class="main" id="main-layout" style="display:none">
-  <nav class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Phase 1</div>
-      <a class="nav-phase" href="#phase1"><span class="nav-phase-num">01</span> Setup & first lens</a>
-      <a class="nav-lesson" href="#l1-1">1.1 — Ecosystem overview</a>
-      <a class="nav-lesson" href="#l1-2">1.2 — Install & pair</a>
-      <a class="nav-lesson" href="#l1-3">1.3 — Hello World</a>
-    </div>
-    <hr class="sidebar-divider">
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Quick links</div>
-      <a class="nav-phase" href="https://ar.snap.com/download" target="_blank" rel="noopener">↗ Download Lens Studio</a>
-      <a class="nav-phase" href="https://developers.snap.com/lens-studio/home" target="_blank" rel="noopener">↗ Official docs</a>
-      <a class="nav-phase" href="https://discord.gg/snapar" target="_blank" rel="noopener">↗ Snap AR Discord</a>
-      <a class="nav-phase" href="https://claude.ai" target="_blank" rel="noopener">↗ Ask Claude for help</a>
-    </div>
-  </nav>
-
-  <main class="content">
-    <div class="intro-card">
-      <p>Every lesson has the key reading built right in, no internet needed for the core concepts. When you want to go deeper or get help with a mini-project, the buttons link back to Claude with context already loaded.</p>
-      <p>The <strong style="color:var(--yellow-dark)">yellow callouts</strong> tell you what changes when you upgrade to Spectacles. The <strong style="color:var(--blue)">blue callouts</strong> have iPhone-specific notes.</p>
-    </div>
-
-    <!-- PHASE 1 -->
-    <div class="phase-block" id="phase1">
-      <div class="phase-header">
-        <span class="phase-num">Phase 1</span>
-        <span class="phase-title">Setup & your first lens</span>
-        
-      </div>
-
-      <!-- 1.1 -->
-      <div class="lesson-card" id="l1-1">
-        <div class="lesson-header" onclick="toggleLesson('b1-1','c1-1')">
-          <span class="lesson-num-badge">1.1</span>
-          <div class="lesson-header-text">
-            <div class="lesson-title">The Lens Studio ecosystem & phone AR fundamentals</div>
-            <div class="lesson-subtitle">What phone AR is, how Lens Studio fits in, and what your phone can do.</div>
-            <div class="lesson-tags"><span class="tag read">reading</span><span class="tag resource">official docs</span></div>
-          </div>
-          <span class="lesson-chevron" id="c1-1">&#9658;</span>
-        </div>
-        <div class="lesson-body" id="b1-1">
-          <div class="lesson-reading">
-            <h3>What is phone AR, exactly?</h3>
-            <p>AR stands for Augmented Reality. It means taking your phone's live camera view of the real world and adding digital things on top (3D objects, animations, text, particles) that appear to exist in your actual space. When you move your phone, the digital objects stay anchored to where you placed them, like they're physically there.</p>
-            <p>Think of it this way: your camera is your eyes, and AR puts invisible objects into what your eyes see. The objects aren't real, but they behave like they are.</p>
-            <h3>What is Lens Studio?</h3>
-            <p>Lens Studio is Snap's free desktop app for building AR experiences, called <span class="key-term">Lenses</span>. It runs on your computer (Windows or Mac). You build your Lens on your computer, then wirelessly push it to your phone where it runs inside Snapchat's camera.</p>
-            <h3>The software stack — what talks to what</h3>
-            <ul>
-              <li><strong style="color:var(--text)">Your Lens</strong> — what you build: 3D objects, scripts, interactions</li>
-              <li><strong style="color:var(--text)">Lens Studio</strong> — the editor on your computer</li>
-              <li><strong style="color:var(--text)">Snapchat app</strong> — runs your Lens on your phone</li>
-              <li><strong style="color:var(--text)">AR framework</strong> — technology baked into your phone that understands surfaces, depth, and lighting</li>
-            </ul>
-            <div class="platform-tabs" data-tabgroup="1-1-ar">
-              <button class="ptab" data-tab="android" onclick="switchTab(this,'1-1-ar')">Android / Pixel</button>
-              <button class="ptab" data-tab="iphone" onclick="switchTab(this,'1-1-ar')">iPhone</button>
-            </div>
-            <div class="ptab-content" data-tabgroup="1-1-ar" data-tab="android">
-              <p>On Android and Pixel phones, the AR framework is called <span class="key-term">ARCore</span>, made by Google. It's deeply integrated into Pixel phones especially. You don't interact with ARCore directly, Lens Studio handles it automatically.</p>
-            </div>
-            <div class="ptab-content" data-tabgroup="1-1-ar" data-tab="iphone">
-              <p>On iPhone, the AR framework is called <span class="key-term">ARKit</span>, made by Apple. iPhones with LiDAR (iPhone 12 Pro and later) get even better depth sensing. Like ARCore, you don't interact with ARKit directly.</p>
-              <div class="callout ios"><strong>iPhone note:</strong> Lens Studio works great on iPhone. LiDAR models get faster surface detection, but the experience is essentially identical either way.</div>
-            </div>
-            <h3>What you will NOT be building</h3>
-            <p>Face filters with silly hats, that's the most visible use of Lenses, but a tiny corner of what's possible. You'll be building world-space experiences: AR that understands and interacts with your real environment.</p>
-            <div class="callout spectacles"><strong>When you get Spectacles:</strong> Same Lens Studio, same concepts, same code. The only change is input method, tapping a screen becomes pinching with your fingers in the air.</div>
-            <div class="recap-box">
-              <div class="recap-box-label">Check yourself before moving on</div>
-              <ol>
-                <li>What does AR mean — what is it adding, and to what?</li>
-                <li>What does Lens Studio do, and where does it run?</li>
-                <li>What AR framework does your phone use, and what does it do?</li>
-                <li>What is a Lens and where does it run?</li>
-                <li>What's the difference between a face filter and a world-space experience?</li>
-              </ol>
-            </div>
-          </div>
-          <div class="resources-section">
-            <div class="resources-label">Key references</div>
-            <div class="resource-grid">
-              <a class="resource-item" href="https://developers.snap.com/lens-studio/overview/getting-started/what-is-lens-studio" target="_blank" rel="noopener">
-                <span class="resource-dot docs"></span>
-                <div><div class="resource-name">What is Lens Studio? — official overview</div><div class="resource-desc">Snap's own introduction to Lens Studio and what you can build.</div><div class="resource-url">developers.snap.com</div></div>
-              </a>
-              <a class="resource-item" href="https://developers.google.com/ar/discover" target="_blank" rel="noopener">
-                <span class="resource-dot docs"></span>
-                <div><div class="resource-name">ARCore overview (Android / Pixel)</div><div class="resource-desc">What ARCore is and what it enables on Android phones.</div><div class="resource-url">developers.google.com/ar/discover</div></div>
-              </a>
-              <a class="resource-item" href="https://developer.apple.com/augmented-reality/" target="_blank" rel="noopener">
-                <span class="resource-dot docs"></span>
-                <div><div class="resource-name">ARKit overview (iPhone)</div><div class="resource-desc">Apple's AR framework overview.</div><div class="resource-url">developer.apple.com/augmented-reality</div></div>
-              </a>
-            </div>
-          </div>
-          <div class="lesson-actions">
-            <a class="btn primary" href="https://claude.ai/new?q=I+just+finished+reading+Lesson+1.1+of+Learn+with+Lemon+on+the+Lens+Studio+ecosystem+for+phone+AR.+Can+you+help+me+go+deeper+on+anything+I+found+confusing?+https://learn-with-lemon-ar.netlify.app/#l1-1" target="_blank">Ask Claude for help ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 1.2 -->
-      <div class="lesson-card" id="l1-2">
-        <div class="lesson-header" onclick="toggleLesson('b1-2','c1-2')">
-          <span class="lesson-num-badge">1.2</span>
-          <div class="lesson-header-text">
-            <div class="lesson-title">Installing Lens Studio & pairing your phone</div>
-            <div class="lesson-subtitle">Step-by-step setup for your specific computer and phone combination.</div>
-            <div class="lesson-tags"><span class="tag read">reading</span><span class="tag project">setup guide</span></div>
-          </div>
-          <span class="lesson-chevron" id="c1-2">&#9658;</span>
-        </div>
-        <div class="lesson-body" id="b1-2">
-          <div class="lesson-reading">
-            <h3>What you need before you start</h3>
-            <ul>
-              <li>Your computer (Windows or Mac) with a decent GPU</li>
-              <li>Your phone with Snapchat installed and logged in</li>
-              <li>A Snap account (free — same login as Snapchat)</li>
-              <li>Both your computer and phone on the same Wi-Fi network</li>
-            </ul>
-            <h3>Step 1 — Install Lens Studio</h3>
-            <p>Go to <strong style="color:var(--text)">ar.snap.com/download</strong> and download Lens Studio. It's a large download (~2–3 GB). Run the installer and sign in with your Snap account.</p>
-            <div class="platform-tabs" data-tabgroup="1-2-os">
-              <button class="ptab" data-tab="windows" onclick="switchTab(this,'1-2-os')">Windows</button>
-              <button class="ptab" data-tab="mac" onclick="switchTab(this,'1-2-os')">Mac</button>
-            </div>
-            <div class="ptab-content" data-tabgroup="1-2-os" data-tab="windows">
-              <p>Run the downloaded <span class="key-term">.exe</span> installer. If Windows Defender flags it, click "More info" then "Run anyway" — normal for new software. Works on Windows 10 and 11.</p>
-            </div>
-            <div class="ptab-content" data-tabgroup="1-2-os" data-tab="mac">
-              <p>Open the <span class="key-term">.dmg</span> and drag Lens Studio to Applications. First time opening: right-click → Open to bypass Gatekeeper. Works on Intel and Apple Silicon Macs.</p>
-            </div>
-            <h3>Step 2 — Enable lens preview on your phone</h3>
-            <div class="platform-tabs" data-tabgroup="1-2-phone">
-              <button class="ptab" data-tab="android" onclick="switchTab(this,'1-2-phone')">Android / Pixel</button>
-              <button class="ptab" data-tab="iphone" onclick="switchTab(this,'1-2-phone')">iPhone</button>
-            </div>
-            <div class="ptab-content" data-tabgroup="1-2-phone" data-tab="android">
-              <p>Open Snapchat → tap your profile icon → Settings (gear icon) → scroll to find <span class="key-term">Lens Studio</span> under "My Account" → enable lens preview.</p>
-            </div>
-            <div class="ptab-content" data-tabgroup="1-2-phone" data-tab="iphone">
-              <p>Open Snapchat → tap your profile icon → Settings (gear icon) → scroll to find <span class="key-term">Lens Studio</span> under "My Account" → enable lens preview. If you don't see it, update Snapchat from the App Store first.</p>
-              <div class="callout ios"><strong>iPhone note:</strong> Make sure Location Services is enabled for Snapchat in your iPhone's Privacy settings for best AR tracking.</div>
-            </div>
-            <h3>Step 3 — Your two preview modes</h3>
-            <ul>
-              <li><strong style="color:var(--text)">Emulator (computer preview)</strong> — a simulated camera view on your screen. Fast for quick checks, but no real depth sensing.</li>
-              <li><strong style="color:var(--text)">Live device preview</strong> — your actual phone camera in your actual room. Use this for anything that needs real surfaces or depth.</li>
-            </ul>
-            <div class="callout tip"><strong>Tip:</strong> Both devices must be on the same Wi-Fi network for wireless preview to work.</div>
-            <div class="callout spectacles"><strong>When you get Spectacles:</strong> The push-to-device workflow is nearly identical, just select Spectacles as your target instead of your phone.</div>
-            <div class="recap-box">
-              <div class="recap-box-label">You're ready to move on when</div>
-              <ol>
-                <li>Lens Studio opens on your computer without errors</li>
-                <li>You're signed in to your Snap account in both Lens Studio and Snapchat</li>
-                <li>You can see the emulator preview when you open a sample project</li>
-                <li>You understand the difference between emulator and live device preview</li>
-              </ol>
-            </div>
-          </div>
-          <div class="resources-section">
-            <div class="resources-label">Key references</div>
-            <div class="resource-grid">
-              <a class="resource-item" href="https://ar.snap.com/download" target="_blank" rel="noopener">
-                <span class="resource-dot docs"></span>
-                <div><div class="resource-name">Download Lens Studio</div><div class="resource-desc">Official download page — Windows and Mac installers.</div><div class="resource-url">ar.snap.com/download</div></div>
-              </a>
-              <a class="resource-item" href="https://developers.snap.com/lens-studio/lens-studio-workflow/previewing-your-lens" target="_blank" rel="noopener">
-                <span class="resource-dot docs"></span>
-                <div><div class="resource-name">Previewing your lens</div><div class="resource-desc">Emulator vs. device preview and how to push to your phone.</div><div class="resource-url">developers.snap.com</div></div>
-              </a>
-              <a class="resource-item" href="https://developers.snap.com/lens-studio/lens-studio-workflow/pairing-to-snapchat" target="_blank" rel="noopener">
-                <span class="resource-dot docs"></span>
-                <div><div class="resource-name">Pairing to Snapchat</div><div class="resource-desc">How to connect Lens Studio to your phone for live wireless preview.</div><div class="resource-url">developers.snap.com</div></div>
-              </a>
-            </div>
-          </div>
-          <div class="lesson-actions">
-            <a class="btn primary" id="setup-help-btn" href="https://claude.ai/new?q=Help+me+troubleshoot+Lens+Studio+setup+—+I+am+working+through+Lesson+1.2+of+my+phone+AR+curriculum+https://learn-with-lemon-ar.netlify.app/#l1-2" target="_blank">Get setup help ↗</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 1.3 -->
-      <div class="lesson-card" id="l1-3">
-        <div class="lesson-header" onclick="toggleLesson('b1-3','c1-3')">
-          <span class="lesson-num-badge">1.3</span>
-          <div class="lesson-header-text">
-            <div class="lesson-title">Mini-project: Hello, World lens</div>
-            <div class="lesson-subtitle">Place floating 3D text anchored to your room and push it to your phone.</div>
-            <div class="lesson-tags"><span class="tag project">mini-project</span></div>
-          </div>
-          <span class="lesson-chevron" id="c1-3">&#9658;</span>
-        </div>
-        <div class="lesson-body" id="b1-3">
-          <div class="lesson-reading">
-            <h3>What you'll build</h3>
-            <p>A lens that places "Hello, World" as floating 3D text anchored to a real spot in your room. When you walk around it, the text stays put. Simple, but this teaches you the full workflow from blank project to phone.</p>
-            <h3>Step 1 — Create a new project</h3>
-            <p>Open Lens Studio. On the home screen, click <span class="key-term">Snapchat</span>, then click the <span class="key-term">Default</span> template ("This is a default empty project"). This opens the editor with a blank scene.</p>
-            <h3>Key concepts you'll encounter</h3>
-            <ul>
-              <li><strong style="color:var(--text)">Scene hierarchy</strong> — the panel listing everything in your lens. Every object you create shows up here.</li>
-              <li><strong style="color:var(--text)">Inspector panel</strong> — click any object to see and change its properties: position, rotation, size, color.</li>
-              <li><strong style="color:var(--text)">3D text object</strong> — renders actual 3D text in your scene. Font, color, size, position are all tweakable.</li>
-              <li><strong style="color:var(--text)">World space</strong> — placing an object in world space means it's anchored to a spot in the real world, not floating in front of your camera.</li>
-            </ul>
-            <div class="callout tip"><strong>Note:</strong> In Lens Studio 5.20 there is no "File → New Project" on the home screen. You reach a blank project through Snapchat → Default.</div>
-            <h3>Step 2 — Add Device Tracking to your camera</h3>
-            <p>This is the step that makes objects stay anchored in your room. Without it, everything follows your camera like a face filter.</p>
-            <ul>
-              <li>In the <span class="key-term">Scene Hierarchy</span> (left panel), click <strong style="color:var(--text)">Camera Object</strong></li>
-              <li>In the <span class="key-term">Inspector</span> (right panel), click <strong style="color:var(--text)">Add Component</strong></li>
-              <li>Choose <strong style="color:var(--text)">Device Tracking</strong> (not "Device Location Tracking")</li>
-              <li>Set the Tracking Mode to <strong style="color:var(--text)">Surface</strong></li>
-              <li>Check <strong style="color:var(--text)">Use Native AR</strong> for best tracking quality</li>
-            </ul>
-            <p>You'll see a green grid appear in the viewport, that means Device Tracking is active.</p>
-            <h3>Step 3 — Add a Text3D object</h3>
-            <p>Click the <span class="key-term">+</span> button in the Scene Hierarchy. Go to <strong style="color:var(--text)">3D</strong> and scroll down to find <strong style="color:var(--text)">Text3D</strong>.</p>
-            <div class="callout tip"><strong>Critical:</strong> Text3D must sit at <strong style="color:var(--text)">root level</strong> in the hierarchy, the same level as Camera Object, NOT nested underneath it. If it appears indented under Camera Object, drag it out. This is the #1 reason text drifts when you move.</div>
-            <h3>Step 4 — Edit and position the text</h3>
-            <ul>
-              <li>With Text3D selected, find the <strong style="color:var(--text)">Text</strong> field in the Inspector and type <span class="key-term">Hello, World</span></li>
-              <li>Adjust color via the Text3D Default Material, white or bright colors read best in AR</li>
-              <li>Set Transform Position: X = <span class="key-term">0</span>, Y = <span class="key-term">0</span>, Z = <span class="key-term">-200</span> (units are centimeters in Surface tracking mode, this places the text 2 meters in front of you)</li>
-              <li>If the text looks tiny, increase Scale to <span class="key-term">5, 5, 5</span></li>
-            </ul>
-            <h3>Step 5 — Preview and push to your phone</h3>
-            <p>Click <strong style="color:var(--text)">Preview Lens</strong> in the toolbar to check it in the emulator. Then open Snapchat on your phone, make sure it's on the same Wi-Fi as your computer, and click the push button in Lens Studio. Your text should appear floating in your room.</p>
-            <h3>What success looks like</h3>
-            <p>You see "Hello, World" in your room via your phone camera. When you walk around it, it stays put; it doesn't follow you. That's world-anchored AR.</p>
-            <h3>🍋 Lemon Drop 🍋</h3>
-              <p>You've got a working lens, now just play! No instructions, no right answers. Here are some things worth exploring:</p>
-              <ul>
-                <li>Change the text to something other than "Hello, World" — your name, a word in another language, an inside joke</li>
-                <li>Find the color setting and make the text something that pops — what reads best in your actual room?</li>
-                <li>Crank the Scale up to something ridiculous. Then make it tiny. What's the limit?</li>
-                <li>Move the Z position and see what happens. How close can you get it before it feels weird to walk through?</li>
-                <li>Add a <em>second</em> Text3D object. Can you figure out how to position them so they're not on top of each other? Feeling dangerous? Add a shape.</li>
-                <li>What happens if you rotate the text? Find the Rotation fields in the Inspector and experiment.</li>
-              </ul>
-              <p>None of these will break anything. The worst case is you undo or start a fresh Default project, which takes 30 seconds.</p>
-            <h3>Troubleshooting</h3>
-            <ul>
-              <li><strong style="color:var(--text)">Text still follows me:</strong> Text3D is nested under Camera Object, drag it to root level</li>
-              <li><strong style="color:var(--text)">Text is invisible:</strong> Try Z = -150 to -300 and Scale 3–8</li>
-              <li><strong style="color:var(--text)">Tracking is jumpy:</strong> Point your phone at a textured surface, plain white floors are hard for ARCore to track</li>
-              <li><strong style="color:var(--text)">Lens doesn't appear on phone:</strong> Make sure both devices are on the same Wi-Fi</li>
-            </ul>
-            <div class="callout spectacles"><strong>When you get Spectacles:</strong> Device Tracking works the same way: same setup, same Surface mode. The text will feel dramatically more real floating in your room without a screen between you and it.</div>
-          </div>
-          <div class="resources-section">
-            <div class="resources-label">Key references</div>
-            <div class="resource-grid">
-              <a class="resource-item" href="https://developers.snap.com/lens-studio/features/ar-tracking/world/tracking-modes" target="_blank" rel="noopener">
-                <span class="resource-dot docs"></span>
-                <div><div class="resource-name">Device Tracking — official guide</div><div class="resource-desc">Surface mode, Use Native AR, and how Device Tracking anchors content to the world.</div><div class="resource-url">developers.snap.com</div></div>
-              </a>
-              <a class="resource-item" href="https://developers.snap.com/lens-studio/features/ar-tracking/world/overview" target="_blank" rel="noopener">
-                <span class="resource-dot docs"></span>
-                <div><div class="resource-name">World AR overview</div><div class="resource-desc">All world-tracking technologies available in Lens Studio.</div><div class="resource-url">developers.snap.com</div></div>
-              </a>
-            </div>
-          </div>
-          <div class="lesson-actions">
-            <a class="btn primary" href="https://claude.ai/new?q=Guide+me+step+by+step+through+the+Hello+World+phone+AR+mini-project+in+Lens+Studio+5.20.+I+need+to+add+Device+Tracking+to+my+camera%2C+add+a+Text3D+object+at+root+level%2C+and+push+it+to+my+phone.+Complete+beginner." target="_blank">Walk me through this project ↗</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </main>
-</div>
-
-<footer class="site-footer" id="site-footer" style="display:none">
-  <div style="display:flex;align-items:center;gap:8px">
-    <img src="action_presenting_data_square.png" alt="Lemon logo" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;">
-    <span class="footer-text">Learn with Lemon — Lens Studio • Snapchat • AR Curriculum</span>
   </div>
   <span class="footer-text">
     <a class="footer-link" href="https://developers.snap.com/lens-studio/home" target="_blank" rel="noopener">Lens Studio docs ↗</a>
