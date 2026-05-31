@@ -83,8 +83,8 @@
   .intro-card p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
   .intro-card p + p { margin-top: 0.5rem; }
 .phase-block { margin-bottom: 3.5rem; scroll-margin-top: 2rem; }
-  .phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1.5px solid var(--border); }
-  .phase-num { font-family: var(--mono); font-size: 10px; color: var(--accent); background: var(--accent-bg); border: 1.5px solid var(--accent-light); padding: 3px 12px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .phase-header { margin-bottom: 0.75rem; padding-bottom: 1rem; border-bottom: 1.5px solid var(--border); }
+  .phase-num { font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: var(--text); }
   .phase-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; flex: 1; color: var(--text); }
 .lesson-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 1rem; overflow: hidden; transition: border-color 0.2s; }
   .lesson-card:hover { border-color: var(--accent-light); }
@@ -166,6 +166,14 @@
     .content { padding: 1.5rem; }
     .site-header { padding: 1rem 1.5rem; }
   }
+
+  /* ── VIDEO LIGHTBOX ── */
+  .video-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.82); z-index:1000; align-items:center; justify-content:center; }
+  .video-overlay.active { display:flex; }
+  .video-box { position:relative; width:90%; max-width:720px; aspect-ratio:16/9; background:#000; border-radius:var(--radius-lg); overflow:hidden; }
+  .video-box iframe { width:100%; height:100%; border:none; }
+  .video-close { position:absolute; top:-40px; right:0; background:transparent; border:none; color:#fff; font-size:24px; cursor:pointer; font-family:var(--sans); }
+  .video-close:hover { color:var(--accent-light); }
 </style>
 </head>
 <body>
@@ -179,7 +187,7 @@
     <div class="picker-box">
       <div class="picker-eyebrow">AR Curriculum</div>
       <h1 class="picker-title">What are you working with?</h1>
-      <p class="picker-sub">Pick your computer and phone. The lessons are the same for everyone — only setup instructions change. You can switch any time from the header.</p>
+      <p class="picker-sub">Pick your computer and phone. The lessons are the same for everyone; only setup instructions change. You can switch any time from the header.</p>
       <div class="picker-section-label">Your computer</div>
       <div class="picker-group">
         <button class="picker-btn" data-group="os" data-val="windows" onclick="pick(this)">Windows</button>
@@ -219,7 +227,7 @@
       <a class="nav-phase" href="#phase1"><span class="nav-phase-num">01</span> Lesson 1</a>
       <a class="nav-lesson" href="#l1-1">1.1 — Ecosystem overview</a>
       <a class="nav-lesson" href="#l1-2">1.2 — Install & pair</a>
-      <a class="nav-lesson" href="#l1-3">1.3 — Hello World + chess piece ✓</a>
+      <a class="nav-lesson" href="#l1-3">1.3 — Hello World + chess piece</a>
     </div>
     <hr class="sidebar-divider">
     <div class="sidebar-section">
@@ -228,7 +236,8 @@
       <a class="nav-lesson" href="#l2-1">2.1 — Surface detection</a>
       <a class="nav-lesson" href="#l2-2">2.2 — Place the chessboard</a>
       <a class="nav-lesson" href="#l2-3">2.3 — Touch & hit testing</a>
-      <a class="nav-lesson" href="#l2-4">2.4 — Tap to change color</a>
+      <a class="nav-lesson" href="#l2-4">2.4 — Intro to TypeScript</a>
+      <a class="nav-lesson" href="#l2-5">2.5 — Tap to change color</a>
     </div>
     <hr class="sidebar-divider">
     <div class="sidebar-section">
@@ -242,7 +251,7 @@
 
   <main class="content">
     <div class="intro-card">
-      <p>Every lesson has the key reading built right in — no internet needed for the core concepts. When you want to go deeper or get help with a mini-project, the buttons link back to Claude with context already loaded.</p>
+      <p>Every lesson has the key reading built right in (no internet needed for the core concepts. When you want to go deeper or get help with a mini-project, the buttons link back to Claude with context already loaded).</p>
       <p>The <strong style="color:var(--yellow-dark)">yellow callouts</strong> tell you what changes when you upgrade to Spectacles. The <strong style="color:var(--blue)">blue callouts</strong> have iPhone-specific notes.</p>
     </div>
 
@@ -267,35 +276,35 @@
         <div class="lesson-body" id="b1-1">
           <div class="lesson-reading">
             <h3>What is phone AR, exactly?</h3>
-            <p>AR stands for Augmented Reality. It means taking your phone's live camera view of the real world and adding digital things on top — 3D objects, animations, text, particles — that appear to exist in your actual space. When you move your phone, the digital objects stay anchored to where you placed them, like they're physically there.</p>
+            <p>AR stands for Augmented Reality. It means taking your phone's live camera view of the real world and adding digital things on top (3D objects, animations, text, particles) that appear to exist in your actual space. When you move your phone, the digital objects stay anchored to where you placed them, like they're physically there.</p>
             <p>Think of it this way: your camera is your eyes, and AR puts invisible objects into what your eyes see. The objects aren't real, but they behave like they are.</p>
             <h3>What is Lens Studio?</h3>
-            <p>Lens Studio is Snap's free desktop app for building AR experiences — called <span class="key-term">Lenses</span>. It runs on your computer (Windows or Mac). You build your Lens on your computer, then wirelessly push it to your phone where it runs inside Snapchat's camera.</p>
+            <p>Lens Studio is Snap's free desktop app for building AR experiences (called <span class="key-term">Lenses</span>). It runs on your computer (Windows or Mac). You build your Lens on your computer, then wirelessly push it to your phone where it runs inside Snapchat's camera.</p>
             <h3>The software stack — what talks to what</h3>
             <ul>
-              <li><strong style="color:var(--text)">Your Lens</strong> — what you build: 3D objects, scripts, interactions</li>
-              <li><strong style="color:var(--text)">Lens Studio</strong> — the editor on your computer</li>
-              <li><strong style="color:var(--text)">Snapchat app</strong> — runs your Lens on your phone</li>
-              <li><strong style="color:var(--text)">AR framework</strong> — technology baked into your phone that understands surfaces, depth, and lighting</li>
+              <li><strong style="color:var(--text)">Your Lens:</strong> what you build (3D objects, scripts, interactions)</li>
+              <li><strong style="color:var(--text)">Lens Studio:</strong> the editor on your computer</li>
+              <li><strong style="color:var(--text)">Snapchat app:</strong> runs your Lens on your phone</li>
+              <li><strong style="color:var(--text)">AR framework:</strong> technology baked into your phone that understands surfaces, depth, and lighting</li>
             </ul>
             <div class="platform-tabs" data-tabgroup="1-1-ar">
               <button class="ptab" data-tab="android" onclick="switchTab(this,'1-1-ar')">Android / Pixel</button>
               <button class="ptab" data-tab="iphone" onclick="switchTab(this,'1-1-ar')">iPhone</button>
             </div>
             <div class="ptab-content" data-tabgroup="1-1-ar" data-tab="android">
-              <p>On Android and Pixel phones, the AR framework is called <span class="key-term">ARCore</span> — made by Google. It's deeply integrated into Pixel phones especially. You don't interact with ARCore directly — Lens Studio handles it automatically.</p>
+              <p>On Android and Pixel phones, the AR framework is called <span class="key-term">ARCore</span>, made by Google. It's deeply integrated into Pixel phones especially. You don't interact with ARCore directly; Lens Studio handles it automatically.</p>
             </div>
             <div class="ptab-content" data-tabgroup="1-1-ar" data-tab="iphone">
-              <p>On iPhone, the AR framework is called <span class="key-term">ARKit</span> — made by Apple. iPhones with LiDAR (iPhone 12 Pro and later) get even better depth sensing. Like ARCore, you don't interact with ARKit directly.</p>
+              <p>On iPhone, the AR framework is called <span class="key-term">ARKit</span>, made by Apple. iPhones with LiDAR (iPhone 12 Pro and later) get even better depth sensing. Like ARCore, you don't interact with ARKit directly.</p>
               <div class="callout ios"><strong>iPhone note:</strong> Lens Studio works great on iPhone. LiDAR models get faster surface detection, but the experience is essentially identical either way.</div>
             </div>
             <h3>What you will NOT be building</h3>
-            <p>Face filters with silly hats — that's the most visible use of Lenses, but a tiny corner of what's possible. You'll be building world-space experiences: AR that understands and interacts with your real environment.</p>
-            <div class="callout spectacles"><strong>When you get Spectacles:</strong> Same Lens Studio, same concepts, same code. The only change is input method — tapping a screen becomes pinching with your fingers in the air.</div>
+            <p>Face filters with silly hats? That's the most visible use of Lenses, but a tiny corner of what's possible. You'll be building world-space experiences: AR that understands and interacts with your real environment.</p>
+            <div class="callout spectacles"><strong>When you get Spectacles:</strong> Same Lens Studio, same concepts, same code. The only change is input method: tapping a screen becomes pinching with your fingers in the air.</div>
             <div class="recap-box">
               <div class="recap-box-label">Check yourself before moving on</div>
               <ol>
-                <li>What does AR mean — what is it adding, and to what?</li>
+                <li>What does AR mean? What is it adding, and to what?</li>
                 <li>What does Lens Studio do, and where does it run?</li>
                 <li>What AR framework does your phone use, and what does it do?</li>
                 <li>What is a Lens and where does it run?</li>
@@ -343,7 +352,7 @@
             <ul>
               <li>Your computer (Windows or Mac) with a decent GPU</li>
               <li>Your phone with Snapchat installed and logged in</li>
-              <li>A Snap account (free — same login as Snapchat)</li>
+              <li>A Snap account (free, same login as Snapchat)</li>
               <li>Both your computer and phone on the same Wi-Fi network</li>
             </ul>
             <h3>Step 1 — Install Lens Studio</h3>
@@ -353,7 +362,7 @@
               <button class="ptab" data-tab="mac" onclick="switchTab(this,'1-2-os')">Mac</button>
             </div>
             <div class="ptab-content" data-tabgroup="1-2-os" data-tab="windows">
-              <p>Run the downloaded <span class="key-term">.exe</span> installer. If Windows Defender flags it, click "More info" then "Run anyway" — normal for new software. Works on Windows 10 and 11.</p>
+              <p>Run the downloaded <span class="key-term">.exe</span> installer. If Windows Defender flags it, click "More info" then "Run anyway" (normal for new software). Works on Windows 10 and 11.</p>
             </div>
             <div class="ptab-content" data-tabgroup="1-2-os" data-tab="mac">
               <p>Open the <span class="key-term">.dmg</span> and drag Lens Studio to Applications. First time opening: right-click → Open to bypass Gatekeeper. Works on Intel and Apple Silicon Macs.</p>
@@ -372,11 +381,11 @@
             </div>
             <h3>Step 3 — Your two preview modes</h3>
             <ul>
-              <li><strong style="color:var(--text)">Emulator (computer preview)</strong> — a simulated camera view on your screen. Fast for quick checks, but no real depth sensing.</li>
-              <li><strong style="color:var(--text)">Live device preview</strong> — your actual phone camera in your actual room. Use this for anything that needs real surfaces or depth.</li>
+              <li><strong style="color:var(--text)">Emulator (computer preview):</strong> a simulated camera view on your screen. Fast for quick checks, but no real depth sensing.</li>
+              <li><strong style="color:var(--text)">Live device preview:</strong> your actual phone camera in your actual room. Use this for anything that needs real surfaces or depth.</li>
             </ul>
             <div class="callout tip"><strong>Tip:</strong> Both devices must be on the same Wi-Fi network for wireless preview to work.</div>
-            <div class="callout spectacles"><strong>When you get Spectacles:</strong> The push-to-device workflow is nearly identical — just select Spectacles as your target instead of your phone.</div>
+            <div class="callout spectacles"><strong>When you get Spectacles:</strong> The push-to-device workflow is nearly identical; just select Spectacles as your target instead of your phone.</div>
             <div class="recap-box">
               <div class="recap-box-label">You're ready to move on when</div>
               <ol>
@@ -415,7 +424,7 @@
         <div class="lesson-header" onclick="toggleLesson('b1-3','c1-3')">
           <span class="lesson-num-badge">1.3</span>
           <div class="lesson-header-text">
-            <div class="lesson-title">Mini-project: Hello, World & your first chess piece ✓</div>
+            <div class="lesson-title">Mini-project: Hello, World & your first chess piece</div>
             <div class="lesson-subtitle">Part 1: Place floating 3D text in your room. Part 2: Import a real chess piece and place it instead.</div>
             <div class="lesson-tags"><span class="tag project">mini-project</span></div>
           </div>
@@ -424,7 +433,7 @@
         <div class="lesson-body" id="b1-3">
           <div class="lesson-reading">
             <h3>What you'll build</h3>
-            <p>A lens that places "Hello, World" as floating 3D text anchored to a real spot in your room. When you walk around it, the text stays put. Simple — but this teaches you the full workflow from blank project to phone.</p>
+            <p>A lens that places "Hello, World" as floating 3D text anchored to a real spot in your room. When you walk around it, the text stays put. Simple, but this teaches you the full workflow from blank project to phone.</p>
             <h3>Step 1 — Create a new project</h3>
             <p>Open Lens Studio. On the home screen, click <span class="key-term">Snapchat</span>, then click the <span class="key-term">Default</span> template ("This is a default empty project"). This opens the editor with a blank scene.</p>
             <div class="callout tip"><strong>Note:</strong> In Lens Studio 5.20 there is no "File → New Project" on the home screen. You reach a blank project through Snapchat → Default.</div>
@@ -437,21 +446,21 @@
               <li>Set the Tracking Mode to <strong style="color:var(--text)">Surface</strong></li>
               <li>Check <strong style="color:var(--text)">Use Native AR</strong> for best tracking quality</li>
             </ul>
-            <p>You'll see a green grid appear in the viewport — that means Device Tracking is active.</p>
+            <p>You'll see a green grid appear in the viewport, which means Device Tracking is active.</p>
             <h3>Step 3 — Add a Text3D object</h3>
             <p>Click the <span class="key-term">+</span> button in the Scene Hierarchy. Go to <strong style="color:var(--text)">3D</strong> and scroll down to find <strong style="color:var(--text)">Text3D</strong>.</p>
             <div class="callout tip"><strong>Critical:</strong> Text3D must sit at <strong style="color:var(--text)">root level</strong> in the hierarchy — the same level as Camera Object, NOT nested underneath it. If it appears indented under Camera Object, drag it out. This is the #1 reason text drifts when you move.</div>
             <h3>Step 4 — Edit and position the text</h3>
             <ul>
               <li>With Text3D selected, find the <strong style="color:var(--text)">Text</strong> field in the Inspector and type <span class="key-term">Hello, World</span></li>
-              <li>Adjust color via the Text3D Default Material — white or bright colors read best in AR</li>
+              <li>Adjust color via the Text3D Default Material (white or bright colors read best in AR)</li>
               <li>Set Transform Position: X = <span class="key-term">0</span>, Y = <span class="key-term">0</span>, Z = <span class="key-term">-200</span> (units are centimeters in Surface tracking mode — this places the text 2 meters in front of you)</li>
               <li>If the text looks tiny, increase Scale to <span class="key-term">5, 5, 5</span></li>
             </ul>
             <h3>Step 5 — Preview and push to your phone</h3>
             <p>Click <strong style="color:var(--text)">Preview Lens</strong> in the toolbar to check it in the emulator. Then open Snapchat on your phone, make sure it's on the same Wi-Fi as your computer, and click the push button in Lens Studio. Your text should appear floating in your room.</p>
             <h3>What success looks like</h3>
-            <p>You see "Hello, World" in your room via your phone camera. When you walk around it, it stays put — it doesn't follow you. That's world-anchored AR.</p>
+            <p>You see "Hello, World" in your room via your phone camera. When you walk around it, it stays put; it doesn't follow you. That's world-anchored AR.</p>
             <h3>Troubleshooting</h3>
             <ul>
               <li><strong style="color:var(--text)">Text still follows me:</strong> Text3D is nested under Camera Object — drag it to root level</li>
@@ -459,7 +468,7 @@
               <li><strong style="color:var(--text)">Tracking is jumpy:</strong> Point your phone at a textured surface — plain white floors are hard for ARCore to track</li>
               <li><strong style="color:var(--text)">Lens doesn't appear on phone:</strong> Make sure both devices are on the same Wi-Fi</li>
             </ul>
-            <div class="callout spectacles"><strong>When you get Spectacles:</strong> Device Tracking works the same way — same setup, same Surface mode. The text will feel dramatically more real floating in your room without a screen between you and it.</div>
+            <div class="callout spectacles"><strong>When you get Spectacles:</strong> Device Tracking works the same way (same setup, same Surface mode). The text will feel dramatically more real floating in your room without a screen between you and it.</div>
 
             <h3>Part 2 — Your first chess piece</h3>
             <p>Now that you know the pipeline works, let's swap the text out for something more interesting. We're going to be building a chess game throughout this curriculum, and every great project starts with a single piece. I found this cool low-poly pawn on Poly by Google and we'll be using it as the foundation of everything we build from here.</p>
@@ -471,12 +480,12 @@
               <li>Click the <strong style="color:var(--text)">+</strong> button in the Asset Browser and choose <strong style="color:var(--text)">Import</strong>, or simply drag and drop the <span class="key-term">.glb</span> file directly into the Asset Browser panel</li>
               <li>The pawn model will appear in your assets — you should see it listed with a small 3D preview icon</li>
             </ul>
-            <div class="callout tip"><strong>GLB vs OBJ:</strong> Poly Pizza offers both formats. Always choose GLB — it bundles the geometry, textures, and materials into one file so nothing goes missing on import.</div>
+            <div class="callout tip"><strong>GLB vs OBJ:</strong> Poly Pizza offers both formats. Always choose GLB; it bundles the geometry, textures, and materials into one file so nothing goes missing on import.</div>
 
             <h3>Step 2 — Add it to your scene</h3>
             <ul>
               <li>In your <strong style="color:var(--text)">Scene Hierarchy</strong>, select and delete the Text3D object from Part 1</li>
-              <li>Drag your imported pawn model from the Asset Browser up into the Scene Hierarchy — it should appear as a new object at root level (same level as Camera Object)</li>
+              <li>Drag your imported pawn model from the Asset Browser up into the Scene Hierarchy; it should appear as a new object at root level (same level as Camera Object)</li>
               <li>If it lands nested under Camera Object, drag it out to root level — same rule as before</li>
             </ul>
 
@@ -550,12 +559,12 @@
             <p>A plane is just Lens Studio's word for a detected flat surface — your floor, your desk, a table. Once a plane exists, you can stick objects to it. That's the foundation everything in Lesson 2 builds on.</p>
 
             <h3>What a world anchor is</h3>
-            <p>A <span class="key-term">world anchor</span> is a point in physical space that an AR object attaches to. Once attached, the object stays there even as you walk around — the phone constantly recalculates its position relative to that anchor so nothing drifts. Think of it as hammering an invisible nail into your floor. Everything you hang from it stays put.</p>
-            <p>In Lesson 1 your pawn was anchored at a fixed position you set manually. In Lesson 2 you'll tap a detected surface and anchor the chessboard exactly where you tap — much more natural.</p>
+            <p>A <span class="key-term">world anchor</span> is a point in physical space that an AR object attaches to. Once attached, the object stays there even as you walk around — the phone constantly recalculates its position relative to that anchor so nothing drifts. Think of it like hammering an invisible nail into your floor: everything you hang from it stays put.</p>
+            <p>In Lesson 1 your pawn was anchored at a fixed position you set manually. In Lesson 2 you'll tap a detected surface and anchor the chessboard exactly where you tap, which is much more natural.</p>
 
             <h3>What affects detection quality</h3>
             <ul>
-              <li><strong style="color:var(--text)">Lighting</strong> — too dark and the camera can't see features. Natural light or a well-lit room works best.</li>
+              <li><strong style="color:var(--text)">Lighting</strong> — too dark, the camera can't see features. Natural light or a well-lit room works best.</li>
               <li><strong style="color:var(--text)">Surface texture</strong> — a wood grain desk is easy to track. A plain white table is much harder — there's nothing visual to grab onto.</li>
               <li><strong style="color:var(--text)">Camera movement</strong> — panning slowly gives ARCore/ARKit time to map the space. Moving fast before it's ready causes tracking errors.</li>
               <li><strong style="color:var(--text)">Reflective surfaces</strong> — glass tables, mirrors, and shiny floors confuse depth estimation.</li>
@@ -633,7 +642,7 @@
             <p>Drag the GLB into the <strong style="color:var(--text)">Asset Browser</strong> in Lens Studio, same as you did with the pawn.</p>
 
             <h3>Step 2 — Set up a Script component on the Camera</h3>
-            <p>Tap-to-place requires a small amount of scripting. Don't worry — we'll keep it minimal here and go deeper on scripts in Lesson 2.4.</p>
+            <p>Tap-to-place requires a small amount of scripting. Don't worry — we'll keep it minimal here and go deeper on scripts in Lesson 2.4 (the reading lesson right after this one).</p>
             <ul>
               <li>In the Scene Hierarchy, click <strong style="color:var(--text)">Camera Object</strong></li>
               <li>In the Inspector, click <strong style="color:var(--text)">Add Component → Script</strong></li>
@@ -724,22 +733,22 @@ touchSystem.touchStart.add(function(eventData) {<br>
             <h3>Touch events</h3>
             <p>When someone taps the screen, Lens Studio fires a <span class="key-term">touch event</span>. Your script can listen for these events and respond to them — move an object, change a color, play a sound, start an animation. There are three types you'll use:</p>
             <ul>
-              <li><span class="key-term">touchStart</span> — fires the moment a finger touches the screen. This is what the tap-to-place script used.</li>
-              <li><span class="key-term">touchMove</span> — fires continuously while a finger is dragging across the screen. You'll use this for drag-and-drop in Lesson 5.</li>
-              <li><span class="key-term">touchEnd</span> — fires when the finger lifts off. Useful for "release to drop" interactions.</li>
+              <li><span class="key-term">touchStart</span>, fires the moment a finger touches the screen. This is what the tap-to-place script used.</li>
+              <li><span class="key-term">touchMove</span>, fires continuously while a finger is dragging across the screen. You'll use this for drag-and-drop in Lesson 5.</li>
+              <li><span class="key-term">touchEnd</span>, fires when the finger lifts off. Useful for "release to drop" interactions.</li>
             </ul>
 
             <h3>Hit testing — from screen tap to 3D world</h3>
             <p>Here's the subtle part: your screen is 2D but your AR world is 3D. When someone taps a spot on the screen, how does the script know what they tapped on in the 3D world?</p>
             <p>The answer is <span class="key-term">hit testing</span>. Lens Studio shoots an invisible ray from the camera through the tap point out into the 3D world — like a laser pointer through the screen. Whatever that ray hits first is what the user tapped. In Lesson 2.2, the ray hit a detected surface plane and that's where the board appeared.</p>
-            <p>In Lesson 2.4, the ray will hit the pawn itself — and that's how you'll know which piece was tapped to change its color.</p>
+            <p>In Lesson 2.5, the ray will hit the pawn itself — and that's how you'll know which piece was tapped to change its color.</p>
 
             <h3>The two kinds of hit testing you'll use</h3>
             <ul>
-              <li><strong style="color:var(--text)">Raycast against world surfaces</strong> — what you did in 2.2. The ray hits a detected plane in the real world. Used for placing objects.</li>
-              <li><strong style="color:var(--text)">Raycast against scene objects</strong> — the ray hits a specific 3D object in your scene. Used for selecting and interacting with objects like the pawn.</li>
+              <li><strong style="color:var(--text)">Raycast against world surfaces</strong>, which is what you did in 2.2. The ray hits a detected plane in the real world. Used for placing objects.</li>
+              <li><strong style="color:var(--text)">Raycast against scene objects</strong>; the ray hits a specific 3D object in your scene. Used for selecting and interacting with objects like the pawn.</li>
             </ul>
-            <div class="callout tip"><strong>Think of it this way:</strong> touch events tell you <em>where</em> on the screen someone tapped. Hit testing tells you <em>what</em> that tap means in the 3D world.</div>
+            <div class="callout tip"><strong>Think of it this way:</strong> touch events tell you <em>where</em> on the screen someone tapped; hit testing tells you <em>what</em> that tap means in the 3D world.</div>
 
             <div class="callout spectacles"><strong>When you get Spectacles:</strong> Touch events become hand gesture events — a pinch or poke in the air instead of a screen tap. The hit testing logic is identical. The Spectacles Interaction Kit handles the input translation so your code barely changes.</div>
 
@@ -764,13 +773,100 @@ touchSystem.touchStart.add(function(eventData) {<br>
         <div class="lesson-header" onclick="toggleLesson('b2-4','c2-4')">
           <span class="lesson-num-badge">2.4</span>
           <div class="lesson-header-text">
-            <div class="lesson-title">Mini-project: tap to change your pawn's color</div>
-            <div class="lesson-subtitle">Your first real TypeScript — tap the pawn to switch it between white and black, choosing which player it belongs to.</div>
-            <div class="lesson-tags"><span class="tag project">mini-project</span><span class="tag read">TypeScript</span></div>
+            <div class="lesson-title">Introduction to TypeScript</div>
+            <div class="lesson-subtitle">The five core concepts you need before writing your first script. Read this before the mini-project.</div>
+            <div class="lesson-tags"><span class="tag read">reading</span></div>
           </div>
           <span class="lesson-chevron" id="c2-4">&#9658;</span>
         </div>
         <div class="lesson-body" id="b2-4">
+          <div class="lesson-reading">
+            <h3>Why TypeScript?</h3>
+            <p>Lens Studio uses TypeScript as its scripting language. TypeScript is essentially JavaScript with an extra layer that catches typos and mistakes before your code runs. If you've never coded before, that's completely fine; everything will be explained as we go. You don't need to be a programmer to build great lenses, but scripting is what takes you from "I placed a thing" to "I made a thing do something."</p>
+
+            <h3>Five concepts you need to know</h3>
+
+            <ul>
+              <li><strong style="color:var(--text)">boolean:</strong> a value that can only ever be one of two things, <span class="key-term">true</span> or <span class="key-term">false</span>. No in between; think of it like a light switch (on or off, yes or no). <span class="key-term">true</span> means yes, it is. <span class="key-term">false</span> means no, it isn't. We use booleans to track states: is the pawn white? Is it the player's turn? Is the game over? In our next script, <span class="key-term">isWhite</span> is a boolean that starts as <span class="key-term">true</span> and flips to <span class="key-term">false</span> every time you tap.</li>
+
+              <li><strong style="color:var(--text)">variable:</strong> a named box that holds a value. <code style="font-family:var(--mono);font-size:12px;background:var(--surface2);padding:1px 5px;border-radius:4px;">var isWhite = true</code> creates a variable called <span class="key-term">isWhite</span> that starts as <span class="key-term">true</span>. You can read it, change it, and check it anytime in your script.</li>
+
+              <li><strong style="color:var(--text)">if/else:</strong> makes a decision. "If isWhite is true, do this. Otherwise (else), do that." It's how your script chooses between two different outcomes based on a condition.</li>
+
+              <li><strong style="color:var(--text)">function:</strong> a named block of code that runs when called. Touch events call a function when triggered. Instead of writing the same instructions over and over, you write them once inside a function and call it whenever you need it.</li>
+
+              <li><strong style="color:var(--text)">component:</strong> an object's properties and behaviors in Lens Studio. Every scene object has components attached to it. The material (color, texture) is a component. The transform (position, rotation, scale) is a component. In the next mini-project, you'll access the material component to change its color property.</li>
+            </ul>
+
+            <p>Want to go deeper on variables and if/else before the mini-project? These two videos are a great plain-English intro:</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin:0.75rem 0 1rem;">
+              <button onclick="openVideo('https://www.youtube.com/embed/ghCbURMWBD8?si=JUC9O7YI18HCw2Yb')" class="btn primary">Watch: Variables explained ↗</button>
+              <button onclick="openVideo('https://www.youtube.com/embed/HQ3dCWjfRZ4?si=P8XbkPOk7Gr9xLho')" class="btn primary">Watch: If/else explained ↗</button>
+            </div>
+
+            <h3>How a script is structured</h3>
+            <p>A script is a text file attached to a scene object. It tells that object what to do. Every Lens Studio script has two key moments:</p>
+            <ul>
+              <li><span class="key-term">onAwake</span> runs once when the lens loads. Use this to set things up: initialize variables, connect to components, set starting values.</li>
+              <li><span class="key-term">onUpdate</span> runs every single frame, roughly 60 times per second. Use this for anything that needs to change continuously over time, like a spinning object or a timer counting down.</li>
+            </ul>
+
+            <h3>How scripts talk to scene objects</h3>
+            <p>Every object in your scene is a <span class="key-term">SceneObject</span>. Your script gets a reference to any object and then reads or changes its properties. The core loop is: get a reference to something, then do something with it.</p>
+            <p>In plain English: "Get the pawn object, find its material component, change the color property to black." That's it. Three steps, every time.</p>
+            <p>You'll also see <span class="key-term">@input</span> at the top of scripts. This is how you connect a script to a specific object or component from the Inspector panel in Lens Studio, without hardcoding the name in the script itself. You'll use it in 2.5.</p>
+
+            <div class="callout tip"><strong>Don't panic at the API docs.</strong> The Lens Studio API reference lists every function and property that exists. It's overwhelming at first; you don't need to memorize it. Just know it exists so you can look things up when needed. Bookmark it now.</div>
+
+            <div class="callout spectacles"><strong>When you get Spectacles:</strong> Same TypeScript, same concepts, same script structure. The only thing that changes is which input events you listen to.</div>
+
+            <div class="recap-box">
+              <div class="recap-box-label">Check yourself before moving on</div>
+              <ol>
+                <li>What is a boolean and what are the only two values it can have?</li>
+                <li>What is a variable?</li>
+                <li>What does if/else do?</li>
+                <li>What is onAwake and when does it run?</li>
+                <li>What is onUpdate and when does it run?</li>
+                <li>What does @input do?</li>
+              </ol>
+            </div>
+          </div>
+          <div class="resources-section">
+            <div class="resources-label">Key references</div>
+            <div class="resource-grid">
+              <a class="resource-item" href="https://developers.snap.com/lens-studio/features/scripting/script-overview" target="_blank" rel="noopener">
+                <span class="resource-dot docs"></span>
+                <div><div class="resource-name">Scripting overview</div><div class="resource-desc">Official introduction to how scripts work in Lens Studio.</div><div class="resource-url">developers.snap.com</div></div>
+              </a>
+              <a class="resource-item" href="https://developers.snap.com/lens-studio/api/lens-scripting/" target="_blank" rel="noopener">
+                <span class="resource-dot docs"></span>
+                <div><div class="resource-name">Lens Studio API reference</div><div class="resource-desc">Every property and method available in Lens Studio scripting. Bookmark this.</div><div class="resource-url">developers.snap.com</div></div>
+              </a>
+              <a class="resource-item" href="https://www.typescriptlang.org/docs/handbook/intro.html" target="_blank" rel="noopener">
+                <span class="resource-dot docs"></span>
+                <div><div class="resource-name">TypeScript handbook</div><div class="resource-desc">Official TypeScript intro. Chapters 1 and 2 are enough to get started.</div><div class="resource-url">typescriptlang.org</div></div>
+              </a>
+            </div>
+          </div>
+          <div class="lesson-actions">
+            <a class="btn primary" href="https://claude.ai/new?q=I+just+read+the+Introduction+to+TypeScript+in+Lesson+2.4+of+Learn+with+Lemon.+I+have+a+question+about+something+I+didn%27t+understand." target="_blank">Ask Claude a question ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.5 -->
+      <div class="lesson-card" id="l2-5">
+        <div class="lesson-header" onclick="toggleLesson('b2-5','c2-5')">
+          <span class="lesson-num-badge">2.5</span>
+          <div class="lesson-header-text">
+            <div class="lesson-title">Mini-project: tap to change your pawn's color</div>
+            <div class="lesson-subtitle">Your first real TypeScript — tap the pawn to switch it between white and black, choosing which player it belongs to.</div>
+            <div class="lesson-tags"><span class="tag project">mini-project</span><span class="tag read">TypeScript</span></div>
+          </div>
+          <span class="lesson-chevron" id="c2-5">&#9658;</span>
+        </div>
+        <div class="lesson-body" id="b2-5">
           <div class="lesson-reading">
             <h3>What you'll build</h3>
             <p>Tap the pawn and it switches between white and black — toggling which player it belongs to. This is genuinely useful for the chess game and also your introduction to TypeScript: variables, if/else logic, and changing object properties at runtime.</p>
@@ -778,10 +874,10 @@ touchSystem.touchStart.add(function(eventData) {<br>
             <h3>A quick TypeScript primer</h3>
             <p>Before we write the script, here are the four concepts you'll use:</p>
             <ul>
-              <li><span class="key-term">variable</span> — a named box that holds a value. <code style="font-family:var(--mono);font-size:12px;background:var(--surface2);padding:1px 5px;border-radius:4px;">var isWhite = true</code> creates a variable called isWhite that starts as true.</li>
-              <li><span class="key-term">if/else</span> — makes a decision. "If isWhite is true, do this. Otherwise, do that."</li>
-              <li><span class="key-term">function</span> — a named block of code that runs when called. Touch events call a function when triggered.</li>
-              <li><span class="key-term">component</span> — an object's properties in Lens Studio. The material is a component. You'll change its color property.</li>
+              <li><span class="key-term">variable</span>, a named box that holds a value. <code style="font-family:var(--mono);font-size:12px;background:var(--surface2);padding:1px 5px;border-radius:4px;">var isWhite = true</code> creates a variable called isWhite that starts as true.</li>
+              <li><span class="key-term">if/else</span>, makes a decision. "If isWhite is true, do this. Otherwise, do that."</li>
+              <li><span class="key-term">function</span>, a named block of code that runs when called. Touch events call a function when triggered.</li>
+              <li><span class="key-term">component</span>, meaning an object's properties in Lens Studio. The material is a component. You'll change its color property.</li>
             </ul>
 
             <h3>Step 1 — Add a Script to the pawn</h3>
@@ -820,15 +916,15 @@ touchEvent.bind(function() {<br>
 
             <h3>What each line does</h3>
             <ul>
-              <li><strong style="color:var(--text)">var isWhite = true</strong> — tracks the current state. Starts as white.</li>
-              <li><strong style="color:var(--text)">vec4(1, 1, 1, 1)</strong> — a color in RGBA format. 1,1,1 is white. 0,0,0 is black. The last 1 is full opacity.</li>
-              <li><strong style="color:var(--text)">isWhite = !isWhite</strong> — flips the boolean. If it was true, it becomes false. If false, true.</li>
-              <li><strong style="color:var(--text)">mainPass.baseColor</strong> — the actual color property on the material. This is what changes visually.</li>
+              <li><strong style="color:var(--text)">var isWhite = true</strong> (tracks the current state, starts as white).</li>
+              <li><strong style="color:var(--text)">vec4(1, 1, 1, 1)</strong>, a color in RGBA format. 1,1,1 is white. 0,0,0 is black. The last 1 is full opacity.</li>
+              <li><strong style="color:var(--text)">isWhite = !isWhite</strong>, which flips the boolean. If it was true, it becomes false. If false, true.</li>
+              <li><strong style="color:var(--text)">mainPass.baseColor</strong>, the actual color property on the material. This is what changes visually.</li>
             </ul>
 
             <div class="callout tip"><strong>Want more colors?</strong> Try <code style="font-family:var(--mono);font-size:12px;background:var(--surface2);padding:1px 5px;border-radius:4px;">new vec4(0.8, 0.2, 0.2, 1)</code> for red or <code style="font-family:var(--mono);font-size:12px;background:var(--surface2);padding:1px 5px;border-radius:4px;">new vec4(0.2, 0.4, 0.8, 1)</code> for blue. The three numbers are Red, Green, Blue — each between 0 and 1.</div>
 
-            <h3>Fun things to try 🍋</h3>
+            <h3>Lemon Drop 🍋</h3>
             <p>You've got a working color toggle — now push it further:</p>
             <ul>
               <li>Change the colors to something other than white and black — team colors, your favorite colors, whatever</li>
@@ -861,7 +957,7 @@ touchEvent.bind(function() {<br>
             </div>
           </div>
           <div class="lesson-actions">
-            <a class="btn primary" href="https://claude.ai/new?q=I+am+working+on+Lesson+2.4+of+Learn+with+Lemon+—+writing+a+TypeScript+script+to+change+my+pawn%27s+color+on+tap+in+Lens+Studio+5.20.+I+am+stuck+and+need+troubleshooting+help." target="_blank">Get troubleshooting help ↗</a>
+            <a class="btn primary" href="https://claude.ai/new?q=I+am+working+on+Lesson+2.5+of+Learn+with+Lemon+—+writing+a+TypeScript+script+to+change+my+pawn%27s+color+on+tap+in+Lens+Studio+5.20.+I+am+stuck+and+need+troubleshooting+help." target="_blank">Get troubleshooting help ↗</a>
           </div>
         </div>
       </div>
@@ -917,10 +1013,15 @@ function applyPlatform() {
   else if (OS === 'mac' && PHONE === 'iphone') q += '+on+Mac+with+my+iPhone';
   q += '+—+I+am+working+through+Lesson+1.2+of+my+phone+AR+curriculum';
   setupBtn.href = 'https://claude.ai/new?q=' + q;
+  // Re-run ALL tab groups so open cards update correctly on platform change
+  var seen = {};
   document.querySelectorAll('.ptab').forEach(function(tab) {
-    var val = tab.dataset.tab;
     var group = tab.dataset.tabgroup;
-    if (val === PHONE || val === OS) switchTab(tab, group);
+    var val = tab.dataset.tab;
+    if (!seen[group] && (val === PHONE || val === OS)) {
+      switchTab(tab, group);
+      seen[group] = true;
+    }
   });
 }
 
@@ -939,6 +1040,21 @@ function showPicker() {
   document.getElementById('site-footer').style.display = 'none';
 }
 
+
+function openVideo(src) {
+  document.getElementById('videoFrame').src = src + '&autoplay=1';
+  document.getElementById('videoOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeVideo() {
+  document.getElementById('videoFrame').src = '';
+  document.getElementById('videoOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function closeVideoOnBg(e) {
+  if (e.target === document.getElementById('videoOverlay')) closeVideo();
+}
+
 function toggleLesson(bodyId, chevId) {
   var body = document.getElementById(bodyId);
   var chev = document.getElementById(chevId);
@@ -946,5 +1062,13 @@ function toggleLesson(bodyId, chevId) {
   chev.classList.toggle('open', isOpen);
 }
 </script>
+
+<!-- VIDEO LIGHTBOX -->
+<div class="video-overlay" id="videoOverlay" onclick="closeVideoOnBg(event)">
+  <div class="video-box" id="videoBox">
+    <button class="video-close" onclick="closeVideo()">✕ close</button>
+    <iframe id="videoFrame" src="" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+  </div>
+</div>
 </body>
 </html>
