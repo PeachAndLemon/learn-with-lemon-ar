@@ -78,13 +78,9 @@
 
   .picker-hero img {
     width: 100%;
-    min-height: 240px;
-    max-height: 420px;
-    object-fit: cover;
-    object-position: center top;
-    border-radius: var(--r-xl);
     display: block;
-    box-shadow: var(--shadow-lg);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-md);
   }
 
   .picker-box {
@@ -656,7 +652,7 @@
   }
 
   @media (max-width: 480px) {
-    .picker-hero img { min-height: 180px; border-radius: var(--r-lg); }
+    .picker-hero img { border-radius: var(--r-lg); }
     .intro-card { border-radius: var(--r-lg); padding: 1.1rem 1.25rem; }
     .lesson-card { border-radius: var(--r-lg); }
   }
